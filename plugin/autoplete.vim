@@ -25,14 +25,15 @@ set cpoptions&vim
 " ============================================================================
 " autoplete setting
 " ============================================================================
+" public setting
 let g:autoplete_enabled     = get(g:, 'autoplete_enabled',      0)
-
 let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
 let g:autoplete_usedict     = get(g:, 'autoplete_usedict',      1)
 let g:autoplete_usekeyword  = get(g:, 'autoplete_usekeyword',   1)
 let g:autoplete_usebuffer   = get(g:, 'autoplete_usebuffer',    1)
 let g:autoplete_usefile     = get(g:, 'autoplete_usefile',      1)
 
+" dict path
 let g:autoplete_dictpath    = get(g:, 'autoplete_dictpath',     expand('<sfile>:p:h:h').'/dict')
 
 " ============================================================================
@@ -327,4 +328,3 @@ endif
 " ============================================================================
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
-

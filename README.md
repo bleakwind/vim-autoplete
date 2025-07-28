@@ -36,7 +36,7 @@ And Run:
 Add these to your `.vimrc`:
 ```vim
 " Set 1 enable autoplete (default: 0)
-let g:autoplete_enable = 1
+let g:autoplete_enabled = 1
 " enable/disable omni (default: 1)
 let g:autoplete_useomni = 1
 " enable/disable dict (default: 1)
@@ -56,4 +56,3 @@ let g:autoplete_usefile = 1
 
 ## License
 BSD 2-Clause - See LICENSE file
-
