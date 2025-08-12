@@ -40,7 +40,7 @@ let g:autoplete_dictpath    = get(g:, 'autoplete_dictpath',     expand('<sfile>:
 " autoplete detail
 " g:autoplete_enabled = 1
 " ============================================================================
-if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
+if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
 
     " --------------------------------------------------
     " autoplete#OperateComplete
@@ -100,7 +100,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
             let l:comp_check = {}
             let l:comp_unique = []
             for il in l:comp_list
-                if type(il) == type({}) && has_key(il, 'word')
+                if type(il) ==# type({}) && has_key(il, 'word')
                     if !has_key(l:comp_check, il.word)
                         let l:comp_check[il.word] = 1
                         call add(l:comp_unique, il)
@@ -123,9 +123,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
         if &omnifunc != ''
             try
                 let l:omni_comp = call(&omnifunc, [0, a:base])
-                if type(l:omni_comp) == type([])
+                if type(l:omni_comp) ==# type([])
                     for il in l:omni_comp
-                        if type(il) == type({}) && has_key(il, 'word')
+                        if type(il) ==# type({}) && has_key(il, 'word')
                             let l:word = il.word
                             if l:word =~# '^'.a:base
                                 call add(l:comp_list, { 'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[O] '.il.menu })
@@ -199,10 +199,10 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
         let l:word_list = {}
 
         " search all buffer
-        keepjumps call cursor(1, 1)
+        keepjumps call setpos('.', [0, 1, 1, 0])
         while 1
             let [lnum, cnum] = searchpos('\<'.l:search_term.'\k\+', 'W')
-            if lnum == 0 | break | endif
+            if lnum ==# 0 | break | endif
 
             let l:line = getline(lnum)
             let l:word = matchstr(l:line, '\<'.l:search_term.'\k\+', cnum - 1)
@@ -211,7 +211,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
             endif
 
             " move next
-            keepjumps call cursor(lnum, cnum + 1)
+            keepjumps call setpos('.', [0, lnum, cnum + 1, 0])
         endwhile
 
         " restore env
