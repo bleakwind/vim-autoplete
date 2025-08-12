@@ -194,8 +194,8 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
         " if base empty, use current
         let l:search_term = empty(a:base) ? l:current_word : a:base
 
-        " search current buffer
-        let l:saved_pos = getpos('.')
+        " save env
+        let l:orig_cursor = getpos('.')
         let l:word_list = {}
 
         " search all buffer
@@ -214,8 +214,8 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled == 1
             keepjumps call cursor(lnum, cnum + 1)
         endwhile
 
-        " recover cursor
-        keepjumps call setpos('.', l:saved_pos)
+        " restore env
+        keepjumps call setpos('.', l:orig_cursor)
 
         " convert to list
         for iw in keys(l:word_list)
