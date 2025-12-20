@@ -121,20 +121,26 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         let l:base_len = len(a:base)
 
         if &omnifunc != ''
+            let l:orig_view = winsaveview()
+            let l:orig_pos = getpos('.')
             try
                 let l:omni_comp = call(&omnifunc, [0, a:base])
+                call winrestview(l:orig_view)
+                call setpos('.', l:orig_pos)
                 if type(l:omni_comp) ==# type([])
                     for il in l:omni_comp
                         if type(il) ==# type({}) && has_key(il, 'word')
                             let l:word = il.word
-                            if l:word =~# '^'.a:base
-                                call add(l:comp_list, { 'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[O] '.il.menu })
+                            if a:base ==# '' || l:word =~# '^'.a:base
+                                let l:menu = has_key(il, 'menu') ? il.menu : ''
+                                call add(l:comp_list, { 'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[O] '.l:menu })
                             endif
                         endif
                     endfor
                 endif
             catch
-                " ignore error
+                call winrestview(l:orig_view)
+                call setpos('.', l:orig_pos)
             endtry
         endif
 
@@ -328,3 +334,4 @@ endif
 " ============================================================================
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
+
