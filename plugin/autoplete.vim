@@ -133,7 +133,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
                             let l:word = il.word
                             if a:base ==# '' || l:word =~# '^'.a:base
                                 let l:menu = has_key(il, 'menu') ? il.menu : ''
-                                call add(l:comp_list, { 'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[O] '.l:menu })
+                                call add(l:comp_list, {'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[O] '.l:menu})
                             endif
                         endif
                     endfor
@@ -167,7 +167,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
                 let l:word_list = readfile(il)
                 for iw in l:word_list
                     if iw =~# '^'.a:base
-                        call add(l:comp_list, { 'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] '.fnamemodify(il, ':t')})
+                        call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] '.fnamemodify(il, ':t')})
                     endif
                 endfor
             endif
@@ -225,7 +225,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
 
         " convert to list
         for iw in keys(l:word_list)
-            call add(l:comp_list, { 'word': iw[l:base_len:], 'abbr': iw, 'menu': '[K] '.l:menu_suffix })
+            call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[K] '.l:menu_suffix})
         endfor
 
         return l:comp_list
@@ -244,7 +244,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             let l:word_list = complete_check() ? [] : getcompletion(a:base, 'buffer')
             for iw in l:word_list
                 let l:word = fnamemodify(iw, ':t')
-                call add(l:comp_list, { 'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[B] buffer'})
+                call add(l:comp_list, {'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[B] buffer'})
             endfor
         catch
             " ignore error
@@ -265,7 +265,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         try
             let l:word_list = complete_check() ? [] : getcompletion(a:base, 'file')
             for iw in l:word_list
-                call add(l:comp_list, { 'word': iw[l:base_len:], 'abbr': iw, 'menu': '[F] file & dir'})
+                call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[F] file & dir'})
             endfor
         catch
             " ignore error
