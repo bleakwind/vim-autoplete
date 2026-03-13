@@ -1,15 +1,15 @@
-" vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
+"  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
-" +--------------------------------------------------------------------------+
-" | $Id: autoplete.vim 2025-05-23 02:30:17 Bleakwind Exp $                   |
-" +--------------------------------------------------------------------------+
-" | Copyright (c) 2008-2025 Bleakwind(Rick Wu).                              |
-" +--------------------------------------------------------------------------+
-" | This source file is autoplete.vim.                                       |
-" | This source file is release under BSD license.                           |
-" +--------------------------------------------------------------------------+
-" | Author: Bleakwind(Rick Wu) <bleakwind@qq.com>                            |
-" +--------------------------------------------------------------------------+
+"  +-------------------------------------------------------------------------+
+"  | $Id: autoplete.vim 2026-03-13 18:03:26 Bleakwind Exp $                  |
+"  +-------------------------------------------------------------------------+
+"  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
+"  +-------------------------------------------------------------------------+
+"  | This source file is autoplete.vim.                                      |
+"  | This source file is release under BSD license.                          |
+"  +-------------------------------------------------------------------------+
+"  | Author: Bleakwind(Rick Wu) <bleakwind@qq.com>                           |
+"  +-------------------------------------------------------------------------+
 "
 
 if exists('g:autoplete_plugin') || &compatible
