@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-13 18:03:26 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-16 12:31:32 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -26,15 +26,24 @@ set cpoptions&vim
 " autoplete setting
 " ============================================================================
 " public setting
-let g:autoplete_enabled     = get(g:, 'autoplete_enabled',      0)
-let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
-let g:autoplete_usedict     = get(g:, 'autoplete_usedict',      1)
-let g:autoplete_usekeyword  = get(g:, 'autoplete_usekeyword',   1)
-let g:autoplete_usebuffer   = get(g:, 'autoplete_usebuffer',    1)
-let g:autoplete_usefile     = get(g:, 'autoplete_usefile',      1)
+let g:autoplete_enabled         = get(g:, 'autoplete_enabled',      0)
+
+let g:autoplete_useomni         = get(g:, 'autoplete_useomni',      1)
+let g:autoplete_usedict         = get(g:, 'autoplete_usedict',      1)
+let g:autoplete_usekeyword      = get(g:, 'autoplete_usekeyword',   1)
+let g:autoplete_usebuffer       = get(g:, 'autoplete_usebuffer',    1)
+let g:autoplete_usefile         = get(g:, 'autoplete_usefile',      1)
+
+let g:autoplete_insenabled      = get(g:, 'autoplete_insenabled',   1)
+let g:autoplete_insdelay        = get(g:, 'autoplete_insdelay',     500)
+let g:autoplete_insminchar      = get(g:, 'autoplete_insminchar',   2)
+let g:autoplete_insftype        = get(g:, 'autoplete_insftype',     ['*'])
 
 " dict path
-let g:autoplete_dictpath    = get(g:, 'autoplete_dictpath',     expand('<sfile>:p:h:h').'/dict')
+let g:autoplete_dictpath        = get(g:, 'autoplete_dictpath',     expand('<sfile>:p:h:h').'/dict')
+
+" plugin variable
+let g:autoplete_insshow_timer   = 0
 
 " ============================================================================
 " autoplete detail
@@ -48,11 +57,11 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     function! autoplete#OperateComplete(type, base) abort
         if a:type
             let l:line = getline('.')
-            let l:colpos = col('.') - 1
-            while l:colpos > 0 && l:line[l:colpos - 1] =~# '\k'
-                let l:colpos -= 1
+            let l:cpos = col('.') - 1
+            while l:cpos > 0 && l:line[l:cpos - 1] =~# '\k'
+                let l:cpos -= 1
             endwhile
-            return l:colpos
+            return l:cpos
         else
             let l:comp_list = []
             let l:file_type = &filetype
@@ -189,16 +198,10 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         let l:menu_suffix = empty(l:current_file) ? 'keyword' : l:current_file
 
         " get input word
-        let l:line = getline('.')
-        let l:colpos = col('.') - 1
-        let l:start = l:colpos
-        while l:start > 0 && l:line[l:start - 1] =~# '\k'
-            let l:start -= 1
-        endwhile
-        let l:current_word = l:line[l:start:l:colpos - 1]
+        let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
 
         " if base empty, use current
-        let l:search_term = empty(a:base) ? l:current_word : a:base
+        let l:search_term = empty(a:base) ? l:word : a:base
 
         " save env
         let l:orig_cursor = getpos('.')
@@ -275,40 +278,55 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     endfunction
 
     " --------------------------------------------------
-    " autoplete#TriggerNext
+    " autoplete#DeleteSelchar
     " --------------------------------------------------
-    function! autoplete#TriggerNext() abort
+    function! autoplete#DeleteSelchar() abort
         if pumvisible()
-            return "\<C-n>"
-        endif
-
-        " check space
-        let l:line = getline('.')
-        let l:colpos = col('.') - 1
-        if l:colpos <= 0 || l:line[l:colpos - 1] =~# '\v\s\c'
-            return "\<Tab>"
-        endif
-
-        " check inputkey
-        if complete_check()
-            return "\<Tab>"
-        endif
-
-        " trigger completion
-        call complete(col('.'), autoplete#OperateComplete(0, matchstr(getline('.')[0:col('.')-2], '\k\+$')))
-
-        " select first
-        if pumvisible()
-            return "\<C-n>"
+            let l:selected = complete_info().selected
+            if l:selected >= 0
+                let l:items = complete_info().items
+                if len(l:items) > l:selected
+                    return "\<C-e>"
+                endif
+            endif
+            return "\<C-e>\<BS>"
         else
-            return ''
+            return "\<BS>"
         endif
     endfunction
 
     " --------------------------------------------------
-    " autoplete#TriggerPrev
+    " autoplete#TriggerTabnext
     " --------------------------------------------------
-    function! autoplete#TriggerPrev() abort
+    function! autoplete#TriggerTabnext() abort
+        if exists('g:autoplete_insshow_timer') && g:autoplete_insshow_timer > 0
+            call timer_stop(g:autoplete_insshow_timer)
+        endif
+
+        if pumvisible() || complete_check()
+            return "\<C-n>"
+        endif
+
+        let l:line = getline('.')
+        let l:cpos = col('.') - 1
+        if l:cpos <= 0 || l:line[l:cpos - 1] =~# '\v\s\c'
+            return "\<Tab>"
+        endif
+
+        let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
+        if !empty(l:word)
+            call complete(col('.'), autoplete#OperateComplete(0, l:word))
+            if pumvisible()
+                return "\<C-n>"
+            endif
+        endif
+        return "\<Tab>"
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#TriggerTabprev
+    " --------------------------------------------------
+    function! autoplete#TriggerTabprev() abort
         if pumvisible()
             return "\<C-p>"
         else
@@ -317,15 +335,51 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     endfunction
 
     " --------------------------------------------------
+    " autoplete#TriggerInsshow
+    " --------------------------------------------------
+    function! autoplete#TriggerInsshow() abort
+        if g:autoplete_insftype ==# ['*'] || index(g:autoplete_insftype, &filetype) >= 0
+            if exists('g:autoplete_insshow_timer') && g:autoplete_insshow_timer > 0
+                call timer_stop(g:autoplete_insshow_timer)
+            endif
+            let g:autoplete_insshow_timer = timer_start(g:autoplete_insdelay, {-> autoplete#TriggerInsrun()})
+        endif
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#TriggerInsrun
+    " --------------------------------------------------
+    function! autoplete#TriggerInsrun()
+        if mode() ==# 'i' && !pumvisible() && !complete_check()
+            let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
+            if !empty(l:word) && len(l:word) >= g:autoplete_insminchar
+                call complete(col('.'), autoplete#OperateComplete(0, l:word))
+            endif
+        endif
+        let g:autoplete_insshow_timer = 0
+    endfunction
+
+    " --------------------------------------------------
     " option
     " --------------------------------------------------
     set completefunc=autoplete#OperateComplete
 
     " --------------------------------------------------
+    " autoplete_cmd_bas
+    " --------------------------------------------------
+    augroup autoplete_cmd_bas
+        autocmd!
+        if g:autoplete_insenabled ==# 1
+            autocmd TextChangedI * call autoplete#TriggerInsshow()
+        endif
+    augroup END
+
+    " --------------------------------------------------
     " keymap
     " --------------------------------------------------
-    inoremap <silent> <expr> <Tab> "\<C-r>=autoplete#TriggerNext()\<CR>"
-    inoremap <silent> <expr> <S-Tab> "\<C-r>=autoplete#TriggerPrev()\<CR>"
+    inoremap <silent> <expr> <Tab> g:autoplete_insshow_timer <= 0 ? "\<C-r>=autoplete#TriggerTabnext()\<CR>" : ""
+    inoremap <silent> <expr> <S-Tab> "\<C-r>=autoplete#TriggerTabprev()\<CR>"
+    inoremap <silent> <expr> <BS> "\<C-r>=autoplete#DeleteSelchar()\<CR>"
 
 endif
 

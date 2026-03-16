@@ -47,6 +47,14 @@ let g:autoplete_usekeyword = 1
 let g:autoplete_usebuffer = 1
 " enable/disable file (default: 1)
 let g:autoplete_usefile = 1
+" Enable auto-completion while typing (default: 1)
+let g:autoplete_insenabled = 1
+" Delay in milliseconds before showing completions while typing (default: 500)
+let g:autoplete_insdelay   = 500
+" Minimum number of characters typed before triggering completion (default: 2)
+let g:autoplete_insminchar = 2
+" File types to enable auto-completion for (* for all)
+let g:autoplete_insftype   = ['*']
 ```
 
 ## Usage
@@ -56,3 +64,4 @@ let g:autoplete_usefile = 1
 
 ## License
 BSD 2-Clause - See LICENSE file
+
