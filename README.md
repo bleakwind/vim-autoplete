@@ -10,7 +10,8 @@ vim-autoplete is a lightweight auto-completion plugin for Vim that provides mult
 
 ## Features
 - Multiple configurable completion sources
-- Smart completion triggering
+- Automatic completion while typing with configurable delay and minimum characters
+- Custom dictionary path support with filetype-based dictionary loading
 - Automatic duplicate removal
 - Lightweight implementation with no external dependencies
 - Extensible dictionary system
@@ -50,17 +51,25 @@ let g:autoplete_usefile = 1
 " Enable auto-completion while typing (default: 1)
 let g:autoplete_insenabled = 1
 " Delay in milliseconds before showing completions while typing (default: 500)
-let g:autoplete_insdelay   = 500
+let g:autoplete_insdelay = 500
 " Minimum number of characters typed before triggering completion (default: 2)
 let g:autoplete_insminchar = 2
 " File types to enable auto-completion for (* for all)
-let g:autoplete_insftype   = ['*']
+let g:autoplete_insftype = ['*']
+" Custom dictionary path support (example: php_string.dict, c_basic.dict)
+let g:autoplete_custdict = '/pub/_program/vim/_dict'
 ```
 
 ## Usage
+### Manual Completion
 - In insert mode, type part of a word then press `<Tab>` to trigger completion
-- Navigate completion menu with `<Tab>` and `<S-Tab>`
+- Navigate completion menu with `<Tab>` (next) and `<S-Tab>` (previous)
 - Press `<Enter>` to select current completion
+### Automatic Completion
+- When g:autoplete_insenabled = 1, completions will appear automatically while typing
+- Adjust the delay with g:autoplete_insdelay (milliseconds)
+- Set minimum characters with g:autoplete_insminchar
+- Control which file types use auto-completion with g:autoplete_insftype
 
 ## License
 BSD 2-Clause - See LICENSE file
