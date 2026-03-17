@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-17 05:28:24 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-17 17:24:10 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -29,7 +29,8 @@ set cpoptions&vim
 let g:autoplete_enabled     = get(g:, 'autoplete_enabled',      0)
 
 let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
-let g:autoplete_usedict     = get(g:, 'autoplete_usedict',      1)
+let g:autoplete_usedefdict  = get(g:, 'autoplete_usedefdict',   1)
+let g:autoplete_usecusdict  = get(g:, 'autoplete_usecusdict',   1)
 let g:autoplete_usekeyword  = get(g:, 'autoplete_usekeyword',   1)
 let g:autoplete_usebuffer   = get(g:, 'autoplete_usebuffer',    1)
 let g:autoplete_usefile     = get(g:, 'autoplete_usefile',      1)
@@ -39,10 +40,10 @@ let g:autoplete_insdelay    = get(g:, 'autoplete_insdelay',     500)
 let g:autoplete_insminchar  = get(g:, 'autoplete_insminchar',   2)
 let g:autoplete_insftype    = get(g:, 'autoplete_insftype',     ['*'])
 
-let g:autoplete_custdict    = get(g:, 'autoplete_custdict',     '')
+let g:autoplete_cusdict     = get(g:, 'autoplete_cusdict',      '')
 
 " plugin variable
-let g:autoplete_defadict    = get(g:, 'autoplete_defadict',     expand('<sfile>:p:h:h').'/dict')
+let g:autoplete_defdict     = get(g:, 'autoplete_defdict',      expand('<sfile>:p:h:h').'/dict')
 let g:autoplete_instimer    = 0
 
 " ============================================================================
@@ -73,25 +74,31 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
                 call extend(l:comp_list, l:omni_comp)
             endif
 
-            " 2. dict
-            if g:autoplete_usedict
-                let l:dict_comp = autoplete#CompleteDict(a:base)
-                call extend(l:comp_list, l:dict_comp)
+            " 2. defdict
+            if g:autoplete_usedefdict
+                let l:defdict_comp = autoplete#CompleteDefdict(a:base)
+                call extend(l:comp_list, l:defdict_comp)
             endif
 
-            " 3. keyword
+            " 3. cusdict
+            if g:autoplete_usecusdict
+                let l:cusdict_comp = autoplete#CompleteCusdict(a:base)
+                call extend(l:comp_list, l:cusdict_comp)
+            endif
+
+            " 4. keyword
             if g:autoplete_usekeyword
                 let l:keyword_comp = autoplete#CompleteKeyword(a:base)
                 call extend(l:comp_list, l:keyword_comp)
             endif
 
-            " 4. buffer
+            " 5. buffer
             if g:autoplete_usebuffer
                 let l:buffer_comp = autoplete#CompleteBuffer(a:base)
                 call extend(l:comp_list, l:buffer_comp)
             endif
 
-            " 5. file
+            " 6. file
             if g:autoplete_usefile
                 let l:file_comp = autoplete#CompleteFile(a:base)
                 call extend(l:comp_list, l:file_comp)
@@ -157,9 +164,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     endfunction
 
     " --------------------------------------------------
-    " autoplete#CompleteDict
+    " autoplete#CompleteDefdict
     " --------------------------------------------------
-    function! autoplete#CompleteDict(base) abort
+    function! autoplete#CompleteDefdict(base) abort
         let l:comp_list = []
         let l:file_type = &filetype
         let l:base_len = len(a:base)
@@ -171,13 +178,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
 
         " dict path list
         let l:dict_list = []
-        if !empty(g:autoplete_custdict) && isdirectory(g:autoplete_custdict)
-            let l:custdict = split(globpath(g:autoplete_custdict, l:file_type.'*.dict'), '\n')
-            call extend(l:dict_list, l:custdict)
-        endif
-        if !empty(g:autoplete_defadict) && isdirectory(g:autoplete_defadict)
-            let l:defadict = split(globpath(g:autoplete_defadict, l:file_type.'*.dict'), '\n')
-            call extend(l:dict_list, l:defadict)
+        if !empty(g:autoplete_defdict) && isdirectory(g:autoplete_defdict)
+            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type.'*.dict'), '\n')
+            call extend(l:dict_list, l:defdict)
         endif
 
         " dict list
@@ -186,7 +189,42 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
                 let l:word_list = readfile(df)
                 for iw in l:word_list
                     if iw =~# '^'.a:base
-                        call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] '.fnamemodify(df, ':t')})
+                        call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] default - '.fnamemodify(df, ':t')})
+                    endif
+                endfor
+            endif
+        endfor
+
+        return l:comp_list
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#CompleteCusdict
+    " --------------------------------------------------
+    function! autoplete#CompleteCusdict(base) abort
+        let l:comp_list = []
+        let l:file_type = &filetype
+        let l:base_len = len(a:base)
+
+        " check filetype
+        if empty(l:file_type)
+            return l:comp_list
+        endif
+
+        " dict path list
+        let l:dict_list = []
+        if !empty(g:autoplete_cusdict) && isdirectory(g:autoplete_cusdict)
+            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type.'*.dict'), '\n')
+            call extend(l:dict_list, l:cusdict)
+        endif
+
+        " dict list
+        for df in l:dict_list
+            if filereadable(df)
+                let l:word_list = readfile(df)
+                for iw in l:word_list
+                    if iw =~# '^'.a:base
+                        call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] custom - '.fnamemodify(df, ':t')})
                     endif
                 endfor
             endif
@@ -387,7 +425,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " --------------------------------------------------
     " keymap
     " --------------------------------------------------
-    inoremap <silent> <expr> <Tab> g:autoplete_instimer <= 0 ? "\<C-r>=autoplete#TriggerTabnext()\<CR>" : "\<Tab>"
+    inoremap <silent> <expr> <Tab> g:autoplete_instimer <= 0 ? "\<C-r>=autoplete#TriggerTabnext()\<CR>" : ""
     inoremap <silent> <expr> <S-Tab> "\<C-r>=autoplete#TriggerTabprev()\<CR>"
     inoremap <silent> <expr> <BS> "\<C-r>=autoplete#DeleteSelchar()\<CR>"
 
