@@ -1,4 +1,3 @@
--webkit-line-clamp
 -webkit-text-fill-color
 -webkit-text-stroke
 -webkit-text-stroke-color
@@ -9,8 +8,8 @@ acos()
 :active
 :active-view-transition
 :active-view-transition-type()
-additive-symbols (@counter-style)
-::after (:after)
+additive-symbols
+::after
 align-content
 align-items
 align-self
@@ -20,8 +19,6 @@ anchor()
 anchor-name
 anchor-scope
 anchor-size()
-<angle>
-<angle-percentage>
 animation
 animation-composition
 animation-delay
@@ -36,10 +33,9 @@ animation-range-end
 animation-range-start
 animation-timeline
 animation-timing-function
-@annotation
 :any-link
 appearance
-ascent-override (@font-face)
+ascent-override
 asin()
 aspect-ratio
 atan()
@@ -60,14 +56,14 @@ background-position
 background-position-x
 background-position-y
 background-repeat
+background-repeat-x
+background-repeat-y
 background-size
-base-palette (@font-palette-values)
+base-palette
 baseline-shift
-<basic-shape>
-::before (:before)
+baseline-source
+::before
 :blank
-bleed (@page)
-<blend-mode>
 block-size
 blur()
 border
@@ -132,7 +128,6 @@ border-top-style
 border-top-width
 border-width
 bottom
-@bottom-left-corner
 box-decoration-break
 box-shadow
 box-sizing
@@ -143,13 +138,11 @@ brightness()
 :buffering
 calc()
 calc-size()
-cap
 caption-side
 caret
+caret-animation
 caret-color
 caret-shape
-ch
-@character-variant
 @charset
 :checked
 ::checkmark
@@ -158,21 +151,25 @@ clamp()
 clear
 clip-path
 clip-rule
-cm
-<color>
 color
+color()
+color-interpolation
 color-interpolation-filters
 color-mix()
+@color-profile
 color-scheme
+::column
 column-count
 column-fill
 column-gap
+column-height
 column-rule
 column-rule-color
 column-rule-style
 column-rule-width
 column-span
 column-width
+column-wrap
 columns
 conic-gradient()
 contain
@@ -188,8 +185,26 @@ container-type
 content
 content-visibility
 contrast()
+contrast-color()
+corner-block-end-shape
+corner-block-start-shape
+corner-bottom-left-shape
+corner-bottom-right-shape
+corner-bottom-shape
+corner-end-end-shape
+corner-end-start-shape
+corner-inline-end-shape
+corner-inline-start-shape
+corner-left-shape
+corner-right-shape
+corner-shape
+corner-start-end-shape
+corner-start-start-shape
+corner-top-left-shape
+corner-top-right-shape
+corner-top-shape
 cos()
-<counter>
+counter()
 counter-increment
 counter-reset
 counter-set
@@ -198,62 +213,46 @@ counters()
 cross-fade()
 cubic-bezier()
 ::cue
-::cue()
-::cue-region
-::cue-region()
 :current
 cursor
-<custom-ident>
+@custom-media
 cx
 cy
 d
-<dashed-ident>
 :default
 :defined
-deg
-descent-override (@font-face)
+descent-override
 ::details-content
-<dimension>
+device-cmyk()
 :dir()
 direction
 :disabled
 display
-<display-box>
-<display-inside>
-<display-internal>
-<display-legacy>
-<display-listitem>
-<display-outside>
 dominant-baseline
-dpcm
-dpi
-dppx
 drop-shadow()
-<easing-function>
+dynamic-range-limit
+dynamic-range-limit-mix()
 element()
 ellipse()
-em
 :empty
 empty-cells
 :enabled
 env()
-ex
 exp()
-fallback (@counter-style)
+fallback
 field-sizing
 ::file-selector-button
 fill
 fill-opacity
 fill-rule
 filter
-<filter-function>
 :first
 :first-child
-::first-letter (:first-letter)
-::first-line (:first-line)
+::first-letter
+::first-line
 :first-of-type
+fit-content
 fit-content()
-<flex>
 flex
 flex-basis
 flex-direction
@@ -268,13 +267,14 @@ flood-opacity
 :focus-visible
 :focus-within
 font
-font-display (@font-face)
+font-display
+font-display
 @font-face
 font-family
-font-family (@font-face)
-font-family (@font-palette-values)
+font-family
+font-family
 font-feature-settings
-font-feature-settings (@font-face)
+font-feature-settings
 @font-feature-values
 font-kerning
 font-language-override
@@ -283,8 +283,10 @@ font-palette
 @font-palette-values
 font-size
 font-size-adjust
+font-stretch
+font-stretch
 font-style
-font-style (@font-face)
+font-style
 font-synthesis
 font-synthesis-position
 font-synthesis-small-caps
@@ -299,19 +301,16 @@ font-variant-ligatures
 font-variant-numeric
 font-variant-position
 font-variation-settings
-font-variation-settings (@font-face)
+font-variation-settings
 font-weight
-font-weight (@font-face)
+font-weight
+font-width
+font-width
 forced-color-adjust
-format()
-fr
-<frequency>
-<frequency-percentage>
 :fullscreen
+@function
 :future
 gap
-grad
-<gradient>
 ::grammar-error
 grayscale()
 grid
@@ -329,16 +328,15 @@ grid-template
 grid-template-areas
 grid-template-columns
 grid-template-rows
-Hz
 hanging-punctuation
 :has()
 :has-slotted
+:heading
+:heading()
 height
 ::highlight()
-@historical-forms
 :host
 :host()
-:host-context()
 :hover
 hsl()
 hue-rotate()
@@ -347,24 +345,21 @@ hyphenate-character
 hyphenate-limit-chars
 hyphens
 hypot()
-ic
-<ident>
-<image>
+if()
 image()
 image-orientation
 image-rendering
 image-resolution
 image-set()
 @import
-in
+!important
 :in-range
 :indeterminate
 inherit
-inherits (@property)
+inherits
 initial
 initial-letter
-initial-letter-align
-initial-value (@property)
+initial-value
 inline-size
 inset
 inset()
@@ -374,7 +369,12 @@ inset-block-start
 inset-inline
 inset-inline-end
 inset-inline-start
-<integer>
+interactivity
+interest-delay
+interest-delay-end
+interest-delay-start
+:interest-source
+:interest-target
 interpolate-size
 :invalid
 invert()
@@ -383,7 +383,6 @@ isolation
 justify-content
 justify-items
 justify-self
-kHz
 @keyframes
 lab()
 :lang()
@@ -391,23 +390,17 @@ lab()
 :last-of-type
 @layer
 layer()
-layer() (@import)
 lch()
-leader()
 :left
 left
-@left-top
-<length>
-<length-percentage>
 letter-spacing
 light-dark()
 lighting-color
 line-break
 line-clamp
-line-gap-override (@font-face)
+line-gap-override
 line-height
 line-height-step
-<line-style>
 linear()
 linear-gradient()
 :link
@@ -415,7 +408,6 @@ list-style
 list-style-image
 list-style-position
 list-style-type
-local()
 :local-link
 log()
 margin
@@ -435,7 +427,6 @@ marker
 marker-end
 marker-mid
 marker-start
-marks (@page)
 mask
 mask-border
 mask-border-mode
@@ -460,32 +451,29 @@ matrix()
 matrix3d()
 max()
 max-block-size
+max-content
 max-height
 max-inline-size
-max-lines
 max-width
 @media
 min()
 min-block-size
+min-content
 min-height
 min-inline-size
 min-width
 minmax()
 mix-blend-mode
-mm
 mod()
 :modal
-ms
 :muted
 @namespace
-navigation (@view-transition)
-negative (@counter-style)
+negative
 :not()
 :nth-child()
 :nth-last-child()
 :nth-last-of-type()
 :nth-of-type()
-<number>
 object-fit
 object-position
 object-view-box
@@ -504,7 +492,6 @@ opacity()
 :open
 :optional
 order
-@ornaments
 orphans
 :out-of-range
 outline
@@ -521,15 +508,13 @@ overflow-wrap
 overflow-x
 overflow-y
 overlay
-override-colors (@font-palette-values)
+override-colors
 overscroll-behavior
 overscroll-behavior-block
 overscroll-behavior-inline
 overscroll-behavior-x
 overscroll-behavior-y
-Pseudo-classes
-Pseudo-elements
-pad (@counter-style)
+pad
 padding
 padding-block
 padding-block-end
@@ -543,7 +528,7 @@ padding-right
 padding-top
 @page
 page
-page-orientation (@page)
+page-orientation
 paint()
 paint-order
 palette-mix()
@@ -551,8 +536,6 @@ palette-mix()
 :past
 path()
 :paused
-pc
-<percentage>
 perspective
 perspective()
 perspective-origin
@@ -568,7 +551,6 @@ place-self
 pointer-events
 polygon()
 :popover-open
-<position>
 position
 position-anchor
 position-area
@@ -578,21 +560,19 @@ position-try-fallbacks
 position-try-order
 position-visibility
 pow()
-prefix (@counter-style)
+prefix
 print-color-adjust
+progress()
 @property
-pt
-px
-Q
 quotes
 r
-rad
 radial-gradient()
-range (@counter-style)
-<ratio>
+range
 ray()
 :read-only
 :read-write
+reading-flow
+reading-order
 rect()
 rem()
 repeat()
@@ -601,13 +581,11 @@ repeating-linear-gradient()
 repeating-radial-gradient()
 :required
 resize
-<resolution>
-reversed()
 revert
+revert-layer
 rgb()
 :right
 right
-@right-top
 :root
 rotate
 rotate()
@@ -618,11 +596,11 @@ rotateZ()
 round()
 row-gap
 ruby-align
-ruby-merge
+ruby-overhang
 ruby-position
+rule-list
 rx
 ry
-s
 saturate()
 scale
 scale()
@@ -634,6 +612,7 @@ scaleZ()
 @scope
 scroll()
 scroll-behavior
+::scroll-button()
 scroll-initial-target
 scroll-margin
 scroll-margin-block
@@ -648,6 +627,7 @@ scroll-margin-right
 scroll-margin-top
 ::scroll-marker
 ::scroll-marker-group
+scroll-marker-group
 scroll-padding
 scroll-padding-block
 scroll-padding-block-end
@@ -662,41 +642,43 @@ scroll-padding-top
 scroll-snap-align
 scroll-snap-stop
 scroll-snap-type
-scroll-state()
+scroll-target-group
 scroll-timeline
 scroll-timeline-axis
 scroll-timeline-name
 scrollbar-color
 scrollbar-gutter
 scrollbar-width
+::search-text
 :seeking
 ::selection
-selector()
 sepia()
+shape()
 shape-image-threshold
 shape-margin
 shape-outside
 shape-rendering
+sibling-count()
+sibling-index()
 sign()
 sin()
-size (@page)
-size-adjust (@font-face)
+size
+size-adjust
 skew()
 skewX()
 skewY()
 ::slotted()
 speak-as
-speak-as (@counter-style)
+speak-as
 ::spelling-error
 sqrt()
-src (@font-face)
+src
 :stalled
 @starting-style
 :state()
 steps()
 stop-color
 stop-opacity
-<string>
 stroke
 stroke-dasharray
 stroke-dashoffset
@@ -705,42 +687,37 @@ stroke-linejoin
 stroke-miterlimit
 stroke-opacity
 stroke-width
-style()
-@styleset
-@stylistic
-suffix (@counter-style)
+suffix
+superellipse()
 @supports
-supports() (@import)
-@swash
-symbols (@counter-style)
+symbols
 symbols()
-syntax (@property)
-system (@counter-style)
+syntax
+system
 tab-size
 table-layout
 tan()
 :target
-target-counter()
-target-counters()
+:target-after
+:target-before
 :target-current
 ::target-text
-target-text()
-:target-within
 text-align
 text-align-last
 text-anchor
+text-autospace
 text-box
 text-box-edge
 text-box-trim
 text-combine-upright
 text-decoration
 text-decoration-color
+text-decoration-inset
 text-decoration-line
 text-decoration-skip
 text-decoration-skip-ink
 text-decoration-style
 text-decoration-thickness
-<text-edge>
 text-emphasis
 text-emphasis-color
 text-emphasis-position
@@ -759,15 +736,11 @@ text-underline-position
 text-wrap
 text-wrap-mode
 text-wrap-style
-<time>
-<time-percentage>
 timeline-scope
 top
-@top-left-corner
 touch-action
 transform
 transform-box
-<transform-function>
 transform-origin
 transform-style
 transition
@@ -782,13 +755,10 @@ translate3d()
 translateX()
 translateY()
 translateZ()
-turn
 type()
-types (@view-transition)
 unicode-bidi
-unicode-range (@font-face)
+unicode-range
 unset
-<url>
 url()
 :user-invalid
 user-select
@@ -797,7 +767,6 @@ user-select
 var()
 vector-effect
 vertical-align
-vh
 view()
 view-timeline
 view-timeline-axis
@@ -813,10 +782,7 @@ view-transition-name
 ::view-transition-old()
 visibility
 :visited
-vmax
-vmin
 :volume-locked
-vw
 :where()
 white-space
 white-space-collapse
@@ -825,10 +791,8 @@ width
 will-change
 word-break
 word-spacing
-word-wrap
 writing-mode
 x
-:xr-overlay
 xywh()
 y
 z-index

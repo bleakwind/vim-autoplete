@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-17 17:24:10 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-19 09:01:23 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -179,7 +179,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         " dict path list
         let l:dict_list = []
         if !empty(g:autoplete_defdict) && isdirectory(g:autoplete_defdict)
-            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type.'*.dict'), '\n')
+            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type.'.dict'), '\n')
+            call extend(l:dict_list, l:defdict)
+            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type.'_*.dict'), '\n')
             call extend(l:dict_list, l:defdict)
         endif
 
@@ -214,7 +216,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         " dict path list
         let l:dict_list = []
         if !empty(g:autoplete_cusdict) && isdirectory(g:autoplete_cusdict)
-            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type.'*.dict'), '\n')
+            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type.'.dict'), '\n')
+            call extend(l:dict_list, l:cusdict)
+            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type.'_*.dict'), '\n')
             call extend(l:dict_list, l:cusdict)
         endif
 
@@ -237,6 +241,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " autoplete#CompleteKeyword
     " --------------------------------------------------
     function! autoplete#CompleteKeyword(base) abort
+        let l:save_iskeyword = &iskeyword
+        set iskeyword+=.,:,-
+
         let l:comp_list = []
         let l:file_type = &filetype
         let l:base_len = len(a:base)
@@ -278,6 +285,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         for iw in keys(l:word_list)
             call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[K] '.l:menu_suffix})
         endfor
+
+        let &iskeyword = l:save_iskeyword
+        unlet l:save_iskeyword
 
         return l:comp_list
     endfunction
@@ -347,6 +357,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " autoplete#TriggerTabnext
     " --------------------------------------------------
     function! autoplete#TriggerTabnext() abort
+        let l:save_iskeyword = &iskeyword
+        set iskeyword+=.,:,-
+
         if exists('g:autoplete_instimer') && g:autoplete_instimer > 0
             call timer_stop(g:autoplete_instimer)
         endif
@@ -368,6 +381,10 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
                 return "\<C-n>"
             endif
         endif
+
+        let &iskeyword = l:save_iskeyword
+        unlet l:save_iskeyword
+
         return "\<Tab>"
     endfunction
 
@@ -398,6 +415,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " autoplete#TriggerInsrun
     " --------------------------------------------------
     function! autoplete#TriggerInsrun()
+        let l:save_iskeyword = &iskeyword
+        set iskeyword+=.,:,-
+
         if mode() ==# 'i' && !pumvisible() && !complete_check()
             let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
             if !empty(l:word) && len(l:word) >= g:autoplete_insminchar
@@ -405,6 +425,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             endif
         endif
         let g:autoplete_instimer = 0
+
+        let &iskeyword = l:save_iskeyword
+        unlet l:save_iskeyword
     endfunction
 
     " --------------------------------------------------

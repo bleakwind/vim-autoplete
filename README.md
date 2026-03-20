@@ -59,7 +59,7 @@ let g:autoplete_insminchar = 2
 " File types to enable auto-completion for (* for all)
 let g:autoplete_insftype = ['*']
 " Custom dictionary path support (example: php_string.dict, c_basic.dict)
-let g:autoplete_cusdict = '/pub/_program/vim/_dict'
+let g:autoplete_cusdict = '/pub/_program/vim/_tool/autoplete/dict'
 ```
 
 ## Usage

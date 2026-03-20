@@ -1,217 +1,525 @@
-assert
-isalnum
-isalpha
-iscntrl
-isdigit
-isgraph
-islower
-isprint
-ispunct
-isspace
-isupper
-isxdigit
-tolower
-toupper
-setlocale
-localeconv
-newlocale
-freelocale
-uselocale
-acos
-asin
-atan
-atan2
-cos
-cosh
-sin
-sinh
-tanh
-exp
-frexp
-ldexp
-log
-log10
-modf
-pow
-sqrt
-ceil
-fabs
-floor
-fmod
+auto
+enum
+restrict
+unsigned
+break
+extern
+return
+void
+case
+float
+short
+volatile
+char
+for
+signed
+while
+const
+goto
+sizeof
+_Bool
+continue
+if
+static
+_Complex
+default
+inline
+struct
+_Imaginary
+do
+int
+switch
+double
+long
+typedef
+else
+register
+union
+ifdef
+ifndef
+elif
+endif
+include
+define
+undef
+line
+error
+pragma
+NDEBUG
+assert(scalar expression);
+complex
+_Complex_I
+imaginary
+_Imaginary_I
+cacos(double complex z);
+cacosf(float complex z);
+cacosl(long double complex z);
+casin(double complex z);
+casinf(float complex z);
+casinl(long double complex z);
+catan(double complex z);
+catanf(float complex z);
+catanl(long double complex z);
+ccos(double complex z);
+ccosf(float complex z);
+ccosl(long double complex z);
+csin(double complex z);
+csinf(float complex z);
+csinl(long double complex z);
+ctan(double complex z);
+ctanf(float complex z);
+ctanl(long double complex z);
+cacosh(double complex z);
+cacoshf(float complex z);
+cacoshl(long double complex z);
+casinh(double complex z);
+casinhf(float complex z);
+casinhl(long double complex z);
+catanh(double complex z);
+catanhf(float complex z);
+catanhl(long double complex z);
+ccosh(double complex z);
+ccoshf(float complex z);
+ccoshl(long double complex z);
+csinh(double complex z);
+csinhf(float complex z);
+csinhl(long double complex z);
+ctanh(double complex z);
+ctanhf(float complex z);
+ctanhl(long double complex z);
+cexp(double complex z);
+cexpf(float complex z);
+cexpl(long double complex z);
+clog(double complex z);
+clogf(float complex z);
+clogl(long double complex z);
+cabs(double complex z);
+cabsf(float complex z);
+cabsl(long double complex z);
+cpow(double complex x, double complex y);
+cpowf(float complex x, float complex y);
+cpowl(long double complex x, long double complex y);
+csqrt(double complex z);
+csqrtf(float complex z);
+csqrtl(long double complex z);
+carg(double complex z);
+cargf(float complex z);
+cargl(long double complex z);
+cimag(double complex z);
+cimagf(float complex z);
+cimagl(long double complex z);
+conj(double complex z);
+conjf(float complex z);
+conjl(long double complex z);
+cproj(double complex z);
+cprojf(float complex z);
+cprojl(long double complex z);
+creal(double complex z);
+crealf(float complex z);
+creall(long double complex z);
+isalnum(int c);
+isalpha(int c);
+isblank(int c);
+iscntrl(int c);
+isdigit(int c);
+isgraph(int c);
+islower(int c);
+isprint(int c);
+ispunct(int c);
+isspace(int c);
+isupper(int c);
+isxdigit(int c);
+tolower(int c);
+toupper(int c);
+EDOM
+EILSEQ
+ERANGE
+errno
+fenv_t
+fexcept_t
+FE_DIVBYZERO
+FE_INEXACT
+FE_INVALID
+FE_OVERFLOW
+FE_UNDERFLOW
+FE_ALL_EXCEPT
+FE_DOWNWARD
+FE_TONEAREST
+FE_TOWARDZERO
+FE_UPWARD
+FE_DFL_ENV
+feclearexcept(int excepts);
+fegetexceptflag(fexcept_t *flagp, int excepts);
+feraiseexcept(int excepts);
+fesetexceptflag(const fexcept_t *flagp, int excepts);
+fetestexcept(int excepts);
+fegetround(void);
+fesetround(int round);
+fegetenv(fenv_t *envp);
+feholdexcept(fenv_t *envp);
+fesetenv(const fenv_t *envp);
+feupdateenv(const fenv_t *envp);
+FLT_ROUNDS
+FLT_EVAL_METHOD
+FLT_RADIX
+FLT_MANT_DIG
+DBL_MANT_DIG
+LDBL_MANT_DIG
+DECIMAL_DIG
+FLT_DIG
+DBL_DIG
+LDBL_DIG
+FLT_MIN_EXP
+DBL_MIN_EXP
+LDBL_MIN_EXP
+FLT_MIN_10_EXP
+DBL_MIN_10_EXP
+LDBL_MIN_10_EXP
+FLT_MAX_EXP
+DBL_MAX_EXP
+LDBL_MAX_EXP
+FLT_MAX_10_EXP
+DBL_MAX_10_EXP
+LDBL_MAX_10_EXP
+FLT_MAX
+DBL_MAX
+LDBL_MAX
+FLT_EPSILON
+DBL_EPSILON
+LDBL_EPSILON
+FLT_MIN
+DBL_MIN
+LDBL_MIN
+imaxdiv_t
+PRIdN
+PRIdLEASTN
+PRIdFASTN
+PRIdMAX
+PRIdPTR
+PRIiN
+PRIiLEASTN
+PRIiFASTN
+PRIiMAX
+PRIiPTR
+PRIoN
+PRIoLEASTN
+PRIoFASTN
+PRIoMAX
+PRIoPTR
+PRIuN
+PRIuLEASTN
+PRIuFASTN
+PRIuMAX
+PRIuPTR
+PRIxN
+PRIxLEASTN
+PRIxFASTN
+PRIxMAX
+PRIxPTR
+PRIXN
+PRIXLEASTN
+PRIXFASTN
+PRIXMAX
+PRIXPTR
+SCNdN
+SCNdLEASTN
+SCNdFASTN
+SCNdMAX
+SCNdPTR
+SCNiN
+SCNiLEASTN
+SCNiFASTN
+SCNiMAX
+SCNiPTR
+SCNoN
+SCNoLEASTN
+SCNoFASTN
+SCNoMAX
+SCNoPTR
+SCNuN
+SCNuLEASTN
+SCNuFASTN
+SCNuMAX
+SCNuPTR
+SCNxN
+SCNxLEASTN
+SCNxFASTN
+SCNxMAX
+SCNxPTR
+imaxabs(intmax_t j);
+imaxdiv(intmax_t numer, intmax_t denom);
+strtoimax(const char * restrict nptr, char ** restrict endptr, int base);
+strtoumax(const char * restrict nptr, char ** restrict endptr, int base);
+wcstoimax(const wchar_t * restrict nptr, wchar_t ** restrict endptr, int base);
+wcstoumax(const wchar_t * restrict nptr, wchar_t ** restrict endptr, int base);
+and
+and_eq
+bitand
+bitor
+compl
+not
+not_eq
+or
+or_eq
+xor
+xor_eq
+CHAR_BIT
+SCHAR_MIN
+SCHAR_MAX
+UCHAR_MAX
+CHAR_MIN
+CHAR_MAX
+MB_LEN_MAX
+SHRT_MIN
+SHRT_MAX
+USHRT_MAX
+INT_MIN
+INT_MAX
+UINT_MAX
+LONG_MIN
+LONG_MAX
+ULONG_MAX
+LLONG_MIN
+LLONG_MAX
+ULLONG_MAX
+struct
+lconv
+NULL
+LC_ALL
+LC_COLLATE
+LC_CTYPE
+LC_MONETARY
+LC_NUMERIC
+LC_TIME
+setlocale(int category, const char *locale);
+localeconv(void);
+float_t
+double_t
+HUGE_VAL
+HUGE_VALF
+HUGE_VALL
+INFINITY
+NAN
+FP_INFINITE
+FP_NAN
+FP_NORMAL
+FP_SUBNORMAL
+FP_ZERO
+FP_FAST_FMA
+FP_FAST_FMAF
+FP_FAST_FMAL
+FP_ILOGB0
+FP_ILOGBNAN
+MATH_ERRNO
+MATH_ERREXCEPT
+math_errhandling
+fpclassify(real-floating x);
+isfinite(real-floating x);
+isinf(real-floating x);
+isnan(real-floating x);
+isnormal(real-floating x);
+signbit(real-floating x);
+acos(double x);
+acosf(float x);
+acosl(long double x);
+asin(double x);
+asinf(float x);
+asinl(long double x);
+atan(double x);
+atanf(float x);
+atanl(long double x);
+atan2(double y, double x);
+atan2f(float y, float x);
+atan2l(long double y, long double x);
+cos(double x);
+cosf(float x);
+cosl(long double x);
+sin(double x);
+sinf(float x);
+sinl(long double x);
+tan(double x);
+tanf(float x);
+tanl(long double x);
+acosh(double x);
+acoshf(float x);
+acoshl(long double x);
+asinh(double x);
+asinhf(float x);
+asinhl(long double x);
+atanh(double x);
+atanhf(float x);
+atanhl(long double x);
+cosh(double x);
+coshf(float x);
+coshl(long double x);
+sinh(double x);
+sinhf(float x);
+sinhl(long double x);
+tanh(double x);
+tanhf(float x);
+tanhl(long double x);
+exp(double x);
+expf(float x);
+expl(long double x);
+exp2(double x);
+exp2f(float x);
+exp2l(long double x);
+expm1(double x);
+expm1f(float x);
+expm1l(long double x);
+frexp(double value, int *exp);
+frexpf(float value, int *exp);
+frexpl(long double value, int *exp);
+ilogb(double x);
+ilogbf(float x);
+ilogbl(long double x);
+ldexp(double x, int exp);
+ldexpf(float x, int exp);
+ldexpl(long double x, int exp);
+log(double x);
+logf(float x);
+logl(long double x);
+log10(double x);
+log10f(float x);
+log10l(long double x);
+log1p(double x);
+log1pf(float x);
+log1pl(long double x);
+log2(double x);
+log2f(float x);
+log2l(long double x);
+logb(double x);
+logbf(float x);
+logbl(long double x);
+modf(double value, double *iptr);
+modff(float value, float *iptr);
+modfl(long double value, long double *iptr);
+scalbn(double x, int n);
+scalbnf(float x, int n);
+scalbnl(long double x, int n);
+scalbln(double x, long int n);
+scalblnf(float x, long int n);
+scalblnl(long double x, long int n);
+cbrt(double x);
+cbrtf(float x);
+cbrtl(long double x);
+fabs(double x);
+fabsf(float x);
+fabsl(long double x);
+hypot(double x, double y);
+hypotf(float x, float y);
+hypotl(long double x, long double y);
+pow(double x, double y);
+powf(float x, float y);
+powl(long double x, long double y);
+sqrt(double x);
+sqrtf(float x);
+sqrtl(long double x);
+erf(double x);
+erff(float x);
+erfl(long double x);
+erfc(double x);
+erfcf(float x);
+erfcl(long double x);
+lgamma(double x);
+lgammaf(float x);
+lgammal(long double x);
+tgamma(double x);
+tgammaf(float x);
+tgammal(long double x);
+ceil(double x);
+ceilf(float x);
+ceill(long double x);
+floor(double x);
+floorf(float x);
+floorl(long double x);
+nearbyint(double x);
+nearbyintf(float x);
+nearbyintl(long double x);
+rint(double x);
+rintf(float x);
+rintl(long double x);
+lrint(double x);
+lrintf(float x);
+lrintl(long double x);
+llrint(double x);
+llrintf(float x);
+llrintl(long double x);
+round(double x);
+roundf(float x);
+roundl(long double x);
+lround(double x);
+lroundf(float x);
+lroundl(long double x);
+llround(double x);
+llroundf(float x);
+llroundl(long double x);
+trunc(double x);
+truncf(float x);
+truncl(long double x);
+fmod(double x, double y);
+fmodf(float x, float y);
+fmodl(long double x, long double y);
+remainder(double x, double y);
+remainderf(float x, float y);
+remainderl(long double x, long double y);
+remquo(double x, double y, int *quo);
+remquof(float x, float y, int *quo);
+remquol(long double x, long double y, int *quo);
+copysign(double x, double y);
+copysignf(float x, float y);
+copysignl(long double x, long double y);
+nan(const char *tagp);
+nanf(const char *tagp);
+nanl(const char *tagp);
+nextafter(double x, double y);
+nextafterf(float x, float y);
+nextafterl(long double x, long double y);
+nexttoward(double x, long double y);
+nexttowardf(float x, long double y);
+nexttowardl(long double x, long double y);
+fdim(double x, double y);
+fdimf(float x, float y);
+fdiml(long double x, long double y);
+fmax(double x, double y);
+fmaxf(float x, float y);
+fmaxl(long double x, long double y);
+fmin(double x, double y);
+fminf(float x, float y);
+fminl(long double x, long double y);
+fma(double x, double y, double z);
+fmaf(float x, float y, float z);
+fmal(long double x, long double y, long double z);
+isgreater(real-floating x, real-floating y);
+isgreaterequal(real-floating x, real-floating y);
+isless(real-floating x, real-floating y);
+islessequal(real-floating x, real-floating y);
+islessgreater(real-floating x, real-floating y);
+isunordered(real-floating x, real-floating y);
 jmp_buf
-setjmp
-longjmp
+setjmp(jmp_buf env);
+longjmp(jmp_buf env, int val);
 sig_atomic_t
-sigset_t
 SIG_DFL
 SIG_ERR
 SIG_IGN
-void
-raise
-kill
-sigprocmask
-sigaction
-sigsuspend
-sigpending
-sigemptyset
-sigfillset
-sigaddset
-sigdelset
-sigismember
-abort
-alarm
-pause
-psignal
-strsignal
-sigwait
+SIGABRT
+SIGFPE
+SIGILL
+SIGINT
+SIGSEGV
+SIGTERM
+signal(int sig, void (*func)(int))
+raise(int sig);
 va_list
-va_start
-va_arg
-va_end
-ptrdiff_t
-size_t
-wchar_t
-NULL
-offsetof
-size_t
-FILE
-fpos_t
-NULL
-_IOFBF
-_IOLBF
-_IONBF
-BUFSIZ
-EOF
-FOPEN_MAX
-FILENAME_MAX
-L_tmpnam
-SEEK_CUR
-SEEK_END
-SEEK_SET
-TMP_MAX
-stderr
-stdin
-stdout
-fclose
-clearerr
-feof
-ferror
-fflush
-fgetpos
-fopen
-fread
-freopen
-fseek
-fsetpos
-ftell
-fwrite
-remove
-rename
-rewind
-setbuf
-setvbuf
-tmpfile
-tmpnam
-fprintf
-printf
-sprintf
-vfprintf
-vprintf
-vsprintf
-fscanf
-scanf
-sscanf
-fgetc
-fgets
-fputc
-fputs
-getc
-getchar
-gets
-putc
-putchar
-puts
-ungetc
-perror
-snprintf
-size_t
-wchar_t
-div_t
-ldiv_t
-NULL
-EXIT_FAILURE
-EXIT_SUCCESS
-RAND_MAX
-MB_CUR_MAX
-atof
-atoi
-atol
-strtod
-strtol
-strtoul
-calloc
-free
-malloc
-realloc
-abort
-atexit
-exit
-getenv
-system
-bsearch
-qsort
-abs
-div
-labs
-ldiv
-rand
-srand
-mblen
-mbstowcs
-mbtowc
-wcstombs
-wctomb
-memchr
-memcmp
-memcpy
-memmove
-memset
-strcat
-strncat
-strchr
-strcmp
-strncmp
-strcoll
-strcpy
-strncpy
-strcspn
-strerror
-strlen
-strpbrk
-strrchr
-strspn
-strstr
-strtok
-strxfrm
-CLOCKS_PER_SEC
-NULL
-TIME_UTC
-size_t
-clock_t
-is
-tm
-NULL
-CLOCKS_PER_SEC
-asctime
-clock
-ctime
-difftime
-gmtime
-localtime
-mktime
-strftime
-time
-timespec_get
+va_arg(va_list ap, type);
+va_copy(va_list dest, va_list src);
+va_end(va_list ap);
+va_start(va_list ap, parmN);
+bool
+true
+false
+offsetof(type, member-designator)
 int8_t
 int16_t
 int32_t
@@ -236,97 +544,352 @@ uint_fast8_t
 uint_fast16_t
 uint_fast32_t
 uint_fast64_t
-intmax_t
-uintmax_t
 intptr_t
 uintptr_t
+intmax_t
+uintmax_t
 INT8_MIN
-INT8_MAX
-UINT8_MAX
 INT16_MIN
-INT16_MAX
-UINT16_MAX
 INT32_MIN
-INT32_MAX
-UINT32_MAX
 INT64_MIN
+INT8_MAX
+INT16_MAX
+INT32_MAX
 INT64_MAX
+UINT8_MAX
+UINT16_MAX
+UINT32_MAX
 UINT64_MAX
+INT_LEAST8_MIN
+INT_LEAST16_MIN
+INT_LEAST32_MIN
+INT_LEAST64_MIN
+INT_LEAST8_MAX
+INT_LEAST16_MAX
+INT_LEAST32_MAX
+INT_LEAST64_MAX
+UINT_LEAST8_MAX
+UINT_LEAST16_MAX
+UINT_LEAST32_MAX
+UINT_LEAST64_MAX
+INT_FAST8_MIN
+INT_FAST16_MIN
+INT_FAST32_MIN
+INT_FAST64_MIN
+INT_FAST8_MAX
+INT_FAST16_MAX
+INT_FAST32_MAX
+INT_FAST64_MAX
+UINT_FAST8_MAX
+UINT_FAST16_MAX
+UINT_FAST32_MAX
+UINT_FAST64_MAX
+INTPTR_MIN
+INTPTR_MAX
+UINTPTR_MAX
 INTMAX_MIN
 INTMAX_MAX
 UINTMAX_MAX
-int8_t
-uint8_t
-int16_t
-uint16_t
-int32_t
-uint32_t
-int64_t
-uint64_t
-PRId8
-PRIu8
-PRId16
-PRIu16
-PRId32
-PRIu32
-PRId64
-PRIu64
-INT8_MIN
-INT8_MAX
-UINT8_MAX
-INT16_MIN
-INT16_MAX
-UINT16_MAX
-INT32_MIN
-INT32_MAX
-UINT32_MAX
-INT64_MIN
-INT64_MAX
-UINT64_MAX
-creal
-cimag
-cabs
-carg
-conj
-cproj
-csin
-ccos
-ctan
-cexp
-clog
-cpow
-csqrt
-sin
-cos
-tan
-asin
+PTRDIFF_MIN
+PTRDIFF_MAX
+SIG_ATOMIC_MIN
+SIG_ATOMIC_MAX
+SIZE_MAX
+WCHAR_MIN
+WCHAR_MAX
+WINT_MIN
+WINT_MAX
+INT8_C(value)
+INT16_C(value)
+INT32_C(value)
+INT64_C(value)
+UINT8_C(value)
+UINT16_C(value)
+UINT32_C(value)
+UINT64_C(value)
+INTMAX_C(value)
+UINTMAX_C(value)
+size_t
+FILE
+fpos_t
+_IOFBF
+_IOLBF
+_IONBF
+BUFSIZ
+EOF
+FOPEN_MAX
+FILENAME_MAX
+L_tmpnam
+SEEK_CUR
+SEEK_END
+SEEK_SET
+TMP_MAX
+stderr
+stdin
+stdout
+remove(const char *filename);
+rename(const char *old, const char *new);
+tmpfile(void);
+tmpnam(char *s);
+fclose(FILE *stream);
+fflush(FILE *stream);
+fopen(const char * restrict filename, const char * restrict mode);
+freopen(const char * restrict filename, const char * restrict mode, FILE * restrict stream);
+setbuf(FILE * restrict stream, char * restrict buf);
+setvbuf(FILE * restrict stream, char * restrict buf, int mode, size_t size);
+fprintf(FILE * restrict stream, const char * restrict format, ...);
+fscanf(FILE * restrict stream, const char * restrict format, ...);
+printf(const char * restrict format, ...);
+scanf(const char * restrict format, ...);
+snprintf(char * restrict s, size_t n, const char * restrict format, ...);
+sprintf(char * restrict s, const char * restrict format, ...);
+sscanf(const char * restrict s, const char * restrict format, ...);
+vfprintf(FILE * restrict stream, const char * restrict format, va_list arg);
+vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
+vprintf(const char * restrict format, va_list arg);
+vscanf(const char * restrict format, va_list arg);
+vsnprintf(char * restrict s, size_t n, const char * restrict format, va_list arg);
+vsprintf(char * restrict s, const char * restrict format, va_list arg);
+vsscanf(const char * restrict s, const char * restrict format, va_list arg);
+fgetc(FILE *stream);
+fgets(char * restrict s, int n, FILE * restrict stream);
+fputc(int c, FILE *stream);
+fputs(const char * restrict s, FILE * restrict stream);
+getc(FILE *stream);
+getchar(void);
+gets(char *s);
+putc(int c, FILE *stream);
+putchar(int c);
+puts(const char *s);
+ungetc(int c, FILE *stream);
+fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
+fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
+fgetpos(FILE * restrict stream, fpos_t * restrict pos);
+fseek(FILE *stream, long int offset, int whence);
+fsetpos(FILE *stream, const fpos_t *pos);
+ftell(FILE *stream);
+rewind(FILE *stream);
+clearerr(FILE *stream);
+feof(FILE *stream);
+ferror(FILE *stream);
+perror(const char *s);
+wchar_t
+div_t
+ldiv_t
+lldiv_t
+EXIT_FAILURE
+EXIT_SUCCESS
+RAND_MAX
+MB_CUR_MAX
+atof(const char *nptr);
+atoi(const char *nptr);
+atol(const char *nptr);
+atoll(const char *nptr);
+strtod(const char * restrict nptr, char ** restrict endptr);
+strtof(const char * restrict nptr, char ** restrict endptr);
+strtold(const char * restrict nptr, char ** restrict endptr);
+strtol(const char * restrict nptr, char ** restrict endptr, int base);
+strtoll(const char * restrict nptr, char ** restrict endptr, int base);
+strtoul(const char * restrict nptr, char ** restrict endptr, int base);
+strtoull( const char * restrict nptr, char ** restrict endptr, int base);
+rand(void);
+srand(unsigned int seed);
+calloc(size_t nmemb, size_t size);
+free(void *ptr);
+malloc(size_t size);
+realloc(void *ptr, size_t size);
+abort(void);
+atexit(void (*func)(void));
+exit(int status);
+_Exit(int status);
+getenv(const char *name);
+system(const char *string);
+bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
+qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
+abs(int j);
+labs(long int j);
+llabs(long long int j);
+div(int numer, int denom);
+ldiv(long int numer, long int denom);
+lldiv(long long int numer, long long int denom);
+mblen(const char *s, size_t n);
+mbtowc(wchar_t * restrict pwc, const char * restrict s, size_t n);
+wctomb(char *s, wchar_t wchar);
+mbstowcs(wchar_t * restrict pwcs, const char * restrict s, size_t n);
+wcstombs(char * restrict s, const wchar_t * restrict pwcs, size_t n);
+memcpy(void * restrict s1, const void * restrict s2, size_t n);
+memmove(void *s1, const void *s2, size_t n);
+strcpy(char * restrict s1, const char * restrict s2);
+strncpy(char * restrict s1, const char * restrict s2, size_t n);
+strcat(char * restrict s1, const char * restrict s2);
+strncat(char * restrict s1, const char * restrict s2, size_t n);
+memcmp(const void *s1, const void *s2, size_t n);
+strcmp(const char *s1, const char *s2);
+strcoll(const char *s1, const char *s2);
+strncmp(const char *s1, const char *s2, size_t n);
+strxfrm(char * restrict s1, const char * restrict s2, size_t n);
+memchr(const void *s, int c, size_t n);
+strchr(const char *s, int c);
+strcspn(const char *s1, const char *s2);
+strpbrk(const char *s1, const char *s2);
+strrchr(const char *s, int c);
+strspn(const char *s1, const char *s2);
+strstr(const char *s1, const char *s2);
+strtok(char * restrict s1, const char * restrict s2);
+memset(void *s, int c, size_t n);
+strerror(int errnum);
+strlen(const char *s);
 acos
+sqrt
+fmod
+nextafter
+asin
+fabs
+frexp
+nexttoward
 atan
 atan2
-sinh
-cosh
-tanh
-asinh
+hypot
+remainder
 acosh
-atanh
-exp
-log
-log10
-pow
-sqrt
-fabs
+cbrt
+ilogb
+remquo
+asinh
 ceil
+ldexp
+rint
+atanh
+copysign
+lgamma
+round
+cos
+erf
+llrint
+scalbn
+sin
+erfc
+llround
+scalbln
+tan
+exp2
+log10
+tgamma
+cosh
+expm1
+log1p
+trunc
+sinh
+fdim
+log2
+carg
+tanh
 floor
-fmod
-feclearexcept
-feraiseexcept
-fetestexcept
-fegetexceptflag
-fesetexceptflag
-fegetround
-fesetround
-fegetenv
-fesetenv
-feholdexcept
-feupdateenv
+logb
+cimag
+exp
+fma
+lrint
+conj
+log
+fmax
+lround
+cproj
+pow
+fmin
+nearbyint
+creal
+CLOCKS_PER_SEC
+clock_t
+time_t
+tm
+clock(void);
+difftime(time_t time1, time_t time0);
+mktime(struct tm *timeptr);
+time(time_t *timer);
+asctime(const struct tm *timeptr);
+ctime(const time_t *timer);
+gmtime(const time_t *timer);
+localtime(const time_t *timer);
+strftime(char * restrict s, size_t maxsize, const char * restrict format, const struct tm * restrict timeptr);
+mbstate_t
+wint_t
+WEOF
+fwprintf(FILE * restrict stream, const wchar_t * restrict format, ...);
+fwscanf(FILE * restrict stream, const wchar_t * restrict format, ...);
+swprintf(wchar_t * restrict s, size_t n, const wchar_t * restrict format, ...);
+swscanf(const wchar_t * restrict s, const wchar_t * restrict format, ...);
+vfwprintf(FILE * restrict stream, const wchar_t * restrict format, va_list arg);
+vfwscanf(FILE * restrict stream, const wchar_t * restrict format, va_list arg);
+vswprintf(wchar_t * restrict s, size_t n, const wchar_t * restrict format, va_list arg);
+vswscanf(const wchar_t * restrict s, const wchar_t * restrict format, va_list arg);
+vwprintf(const wchar_t * restrict format, va_list arg);
+vwscanf(const wchar_t * restrict format, va_list arg);
+wprintf(const wchar_t * restrict format, ...);
+wscanf(const wchar_t * restrict format, ...);
+fgetwc(FILE *stream);
+fgetws(wchar_t * restrict s, int n, FILE * restrict stream);
+fputwc(wchar_t c, FILE *stream);
+fputws(const wchar_t * restrict s, FILE * restrict stream);
+fwide(FILE *stream, int mode);
+getwc(FILE *stream);
+getwchar(void);
+putwc(wchar_t c, FILE *stream);
+putwchar(wchar_t c);
+ungetwc(wint_t c, FILE *stream);
+wcstod(const wchar_t * restrict nptr, wchar_t ** restrict endptr);
+wcstof(const wchar_t * restrict nptr, wchar_t ** restrict endptr);
+wcstold(const wchar_t * restrict nptr, wchar_t ** restrict endptr);
+wcstol(const wchar_t * restrict nptr, wchar_t ** restrict endptr, int base);
+wcstoll(const wchar_t * restrict nptr, wchar_t ** restrict endptr, int base);
+wcstoul(const wchar_t * restrict nptr, wchar_t ** restrict endptr, int base);
+wcstoull( const wchar_t * restrict nptr, wchar_t ** restrict endptr, int base);
+wcscpy(wchar_t * restrict s1, const wchar_t * restrict s2);
+wcsncpy(wchar_t * restrict s1, const wchar_t * restrict s2, size_t n);
+wmemcpy(wchar_t * restrict s1, const wchar_t * restrict s2, size_t n);
+wmemmove(wchar_t *s1, const wchar_t *s2, size_t n);
+wcscat(wchar_t * restrict s1, const wchar_t * restrict s2);
+wcsncat(wchar_t * restrict s1, const wchar_t * restrict s2, size_t n);
+wcscmp(const wchar_t *s1, const wchar_t *s2);
+wcscoll(const wchar_t *s1, const wchar_t *s2);
+wcsncmp(const wchar_t *s1, const wchar_t *s2, size_t n);
+wcsxfrm(wchar_t * restrict s1, const wchar_t * restrict s2, size_t n);
+wmemcmp(const wchar_t *s1, const wchar_t *s2, size_t n);
+wcschr(const wchar_t *s, wchar_t c);
+wcscspn(const wchar_t *s1, const wchar_t *s2);
+wcspbrk(const wchar_t *s1, const wchar_t *s2);
+wcsrchr(const wchar_t *s, wchar_t c);
+wcsspn(const wchar_t *s1, const wchar_t *s2);
+wcsstr(const wchar_t *s1, const wchar_t *s2);
+wcstok(wchar_t * restrict s1, const wchar_t * restrict s2, wchar_t ** restrict ptr);
+wmemchr(const wchar_t *s, wchar_t c, size_t n);
+wcslen(const wchar_t *s);
+wmemset(wchar_t *s, wchar_t c, size_t n);
+wcsftime(wchar_t * restrict s, size_t maxsize, const wchar_t * restrict format, const struct tm * restrict timeptr);
+btowc(int c);
+wctob(wint_t c);
+mbsinit(const mbstate_t *ps);
+mbrlen(const char * restrict s, size_t n, mbstate_t * restrict ps);
+mbrtowc(wchar_t * restrict pwc, const char * restrict s, size_t n, mbstate_t * restrict ps);
+wcrtomb(char * restrict s, wchar_t wc, mbstate_t * restrict ps);
+mbsrtowcs(wchar_t * restrict dst, const char ** restrict src, size_t len, mbstate_t * restrict ps);
+wcsrtombs(char * restrict dst, const wchar_t ** restrict src, size_t len, mbstate_t * restrict ps);
+iswalnum(wint_t wc);
+iswalpha(wint_t wc);
+iswblank(wint_t wc);
+iswcntrl(wint_t wc);
+iswdigit(wint_t wc);
+iswgraph(wint_t wc);
+iswlower(wint_t wc);
+iswprint(wint_t wc);
+iswpunct(wint_t wc);
+iswspace(wint_t wc);
+iswupper(wint_t wc);
+iswxdigit(wint_t wc);
+iswctype(wint_t wc, wctype_t desc);
+wctype(const char *property);
+towlower(wint_t wc);
+towupper(wint_t wc);
+towctrans(wint_t wc, wctrans_t desc);
+wctrans(const char *property);
 
