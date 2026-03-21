@@ -38,6 +38,8 @@ Add these to your `.vimrc`:
 ```vim
 " Set 1 enable autoplete (default: 0)
 let g:autoplete_enabled = 1
+" 'ins': auto-trigger while typing; 'tab': trigger on Tab key press (default: ins)
+let g:autoplete_trigtype = 'ins'
 " enable/disable omni (default: 1)
 let g:autoplete_useomni = 1
 " enable/disable defdict (default: 1)
@@ -50,8 +52,6 @@ let g:autoplete_usekeyword = 1
 let g:autoplete_usebuffer = 1
 " enable/disable file (default: 1)
 let g:autoplete_usefile = 1
-" Enable auto-completion while typing (default: 1)
-let g:autoplete_insenabled = 1
 " Delay in milliseconds before showing completions while typing (default: 500)
 let g:autoplete_insdelay = 500
 " Minimum number of characters typed before triggering completion (default: 2)
@@ -64,16 +64,17 @@ let g:autoplete_cusdict = '/pub/_program/vim/_tool/autoplete/dict'
 
 ## Usage
 
-### Manual Completion
-- In insert mode, type part of a word then press `<Tab>` to trigger completion
-- Navigate completion menu with `<Tab>` (next) and `<S-Tab>` (previous)
-- Press `<Enter>` to select current completion
-
 ### Automatic Completion
-- When g:autoplete_insenabled = 1, completions will appear automatically while typing
+- When g:autoplete_trigtype = 'ins', completions will appear automatically while typing
 - Adjust the delay with g:autoplete_insdelay (milliseconds)
 - Set minimum characters with g:autoplete_insminchar
 - Control which file types use auto-completion with g:autoplete_insftype
+
+### Manual Completion
+- When g:autoplete_trigtype = 'tab', completions will be triggered by pressing Tab
+- In insert mode, type part of a word then press `<Tab>` to trigger completion
+- Navigate completion menu with `<Tab>` (next) and `<S-Tab>` (previous)
+- Press `<Enter>` to select current completion
 
 ## License
 BSD 2-Clause - See LICENSE file

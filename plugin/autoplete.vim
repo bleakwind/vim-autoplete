@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-19 09:01:23 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-21 11:46:34 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -27,6 +27,7 @@ set cpoptions&vim
 " ============================================================================
 " public setting
 let g:autoplete_enabled     = get(g:, 'autoplete_enabled',      0)
+let g:autoplete_trigtype    = get(g:, 'autoplete_trigtype',     'ins')
 
 let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
 let g:autoplete_usedefdict  = get(g:, 'autoplete_usedefdict',   1)
@@ -35,7 +36,6 @@ let g:autoplete_usekeyword  = get(g:, 'autoplete_usekeyword',   1)
 let g:autoplete_usebuffer   = get(g:, 'autoplete_usebuffer',    1)
 let g:autoplete_usefile     = get(g:, 'autoplete_usefile',      1)
 
-let g:autoplete_insenabled  = get(g:, 'autoplete_insenabled',   1)
 let g:autoplete_insdelay    = get(g:, 'autoplete_insdelay',     500)
 let g:autoplete_insminchar  = get(g:, 'autoplete_insminchar',   2)
 let g:autoplete_insftype    = get(g:, 'autoplete_insftype',     ['*'])
@@ -360,25 +360,23 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         let l:save_iskeyword = &iskeyword
         set iskeyword+=.,:,-
 
-        if exists('g:autoplete_instimer') && g:autoplete_instimer > 0
-            call timer_stop(g:autoplete_instimer)
-        endif
-
         if pumvisible() || complete_check()
             return "\<C-n>"
         endif
 
-        let l:line = getline('.')
-        let l:cpos = col('.') - 1
-        if l:cpos <= 0 || l:line[l:cpos - 1] =~# '\v\s\c'
-            return "\<Tab>"
-        endif
+        if g:autoplete_trigtype ==# 'tab'
+            let l:line = getline('.')
+            let l:cpos = col('.') - 1
+            if l:cpos <= 0 || l:line[l:cpos - 1] =~# '\v\s\c'
+                return "\<Tab>"
+            endif
 
-        let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
-        if !empty(l:word)
-            call complete(col('.'), autoplete#OperateComplete(0, l:word))
-            if pumvisible()
-                return "\<C-n>"
+            let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
+            if !empty(l:word)
+                call complete(col('.'), autoplete#OperateComplete(0, l:word))
+                if pumvisible()
+                    return "\<C-n>"
+                endif
             endif
         endif
 
@@ -392,11 +390,10 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " autoplete#TriggerTabprev
     " --------------------------------------------------
     function! autoplete#TriggerTabprev() abort
-        if pumvisible()
+        if pumvisible() || complete_check()
             return "\<C-p>"
-        else
-            return "\<S-Tab>"
         endif
+        return "\<S-Tab>"
     endfunction
 
     " --------------------------------------------------
@@ -440,7 +437,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " --------------------------------------------------
     augroup autoplete_cmd_bas
         autocmd!
-        if g:autoplete_insenabled ==# 1
+        if g:autoplete_trigtype ==# 'ins'
             autocmd TextChangedI * call autoplete#TriggerInsshow()
         endif
     augroup END
@@ -448,7 +445,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " --------------------------------------------------
     " keymap
     " --------------------------------------------------
-    inoremap <silent> <expr> <Tab> g:autoplete_instimer <= 0 ? "\<C-r>=autoplete#TriggerTabnext()\<CR>" : ""
+    inoremap <silent> <expr> <Tab> "\<C-r>=autoplete#TriggerTabnext()\<CR>"
     inoremap <silent> <expr> <S-Tab> "\<C-r>=autoplete#TriggerTabprev()\<CR>"
     inoremap <silent> <expr> <BS> "\<C-r>=autoplete#DeleteSelchar()\<CR>"
 
