@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-21 12:26:47 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-22 00:39:00 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -27,7 +27,6 @@ set cpoptions&vim
 " ============================================================================
 " public setting
 let g:autoplete_enabled     = get(g:, 'autoplete_enabled',      0)
-let g:autoplete_trigtype    = get(g:, 'autoplete_trigtype',     'ins')
 
 let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
 let g:autoplete_usedefdict  = get(g:, 'autoplete_usedefdict',   1)
@@ -36,6 +35,7 @@ let g:autoplete_usekeyword  = get(g:, 'autoplete_usekeyword',   1)
 let g:autoplete_usebuffer   = get(g:, 'autoplete_usebuffer',    1)
 let g:autoplete_usefile     = get(g:, 'autoplete_usefile',      1)
 
+let g:autoplete_insstate    = get(g:, 'autoplete_insstate',     1)
 let g:autoplete_insdelay    = get(g:, 'autoplete_insdelay',     500)
 let g:autoplete_insminchar  = get(g:, 'autoplete_insminchar',   2)
 let g:autoplete_insftype    = get(g:, 'autoplete_insftype',     ['*'])
@@ -44,6 +44,7 @@ let g:autoplete_cusdict     = get(g:, 'autoplete_cusdict',      '')
 
 " plugin variable
 let g:autoplete_defdict     = get(g:, 'autoplete_defdict',      expand('<sfile>:p:h:h').'/dict')
+let g:autoplete_tabtimer    = 0
 let g:autoplete_instimer    = 0
 
 " ============================================================================
@@ -287,8 +288,6 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         endfor
 
         let &iskeyword = l:save_iskeyword
-        unlet l:save_iskeyword
-
         return l:comp_list
     endfunction
 
@@ -336,49 +335,6 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     endfunction
 
     " --------------------------------------------------
-    " autoplete#TriggerTabnext
-    " --------------------------------------------------
-    function! autoplete#TriggerTabnext() abort
-        let l:save_iskeyword = &iskeyword
-        set iskeyword+=.,:,-
-
-        if pumvisible() || complete_check()
-            return "\<C-n>"
-        endif
-
-        if g:autoplete_trigtype ==# 'tab'
-            let l:line = getline('.')
-            let l:cpos = col('.') - 1
-            if l:cpos <= 0 || l:line[l:cpos - 1] =~# '\v\s\c'
-                return "\<Tab>"
-            endif
-
-            let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
-            if !empty(l:word)
-                call complete(col('.'), autoplete#OperateComplete(0, l:word))
-                if pumvisible()
-                    return "\<C-n>"
-                endif
-            endif
-        endif
-
-        let &iskeyword = l:save_iskeyword
-        unlet l:save_iskeyword
-
-        return "\<Tab>"
-    endfunction
-
-    " --------------------------------------------------
-    " autoplete#TriggerTabprev
-    " --------------------------------------------------
-    function! autoplete#TriggerTabprev() abort
-        if pumvisible() || complete_check()
-            return "\<C-p>"
-        endif
-        return "\<S-Tab>"
-    endfunction
-
-    " --------------------------------------------------
     " autoplete#DeleteSelchar
     " --------------------------------------------------
     function! autoplete#DeleteSelchar() abort
@@ -396,6 +352,63 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     endfunction
 
     " --------------------------------------------------
+    " autoplete#TriggerTabnext
+    " --------------------------------------------------
+    function! autoplete#TriggerTabnext() abort
+        let l:save_iskeyword = &iskeyword
+        set iskeyword+=.,:,-
+
+        if pumvisible() || complete_check()
+            let &iskeyword = l:save_iskeyword
+            return "\<C-n>"
+        endif
+
+        let l:line = getline('.')
+        let l:cpos = col('.') - 1
+        if l:cpos <= 0 || l:line[l:cpos - 1] =~# '\v\s\c'
+            let &iskeyword = l:save_iskeyword
+            return "\<Tab>"
+        endif
+
+        if exists('g:autoplete_tabtimer') && g:autoplete_tabtimer > 0
+            call timer_stop(g:autoplete_tabtimer)
+        endif
+        let g:autoplete_tabtimer = timer_start(0, {-> autoplete#TriggerTabrun()})
+
+        let &iskeyword = l:save_iskeyword
+        return ""
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#TriggerTabnext
+    " --------------------------------------------------
+    function! autoplete#TriggerTabrun() abort
+        let l:save_iskeyword = &iskeyword
+        set iskeyword+=.,:,-
+
+        if mode() ==# 'i' && !pumvisible() && !complete_check()
+            let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
+            if !empty(l:word)
+                call complete(col('.'), autoplete#OperateComplete(0, l:word))
+                call feedkeys("\<C-n>", 'n')
+            endif
+        endif
+        let g:autoplete_tabtimer = 0
+
+        let &iskeyword = l:save_iskeyword
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#TriggerTabprev
+    " --------------------------------------------------
+    function! autoplete#TriggerTabprev() abort
+        if pumvisible() || complete_check()
+            return "\<C-p>"
+        endif
+        return "\<S-Tab>"
+    endfunction
+
+    " --------------------------------------------------
     " autoplete#TriggerInsshow
     " --------------------------------------------------
     function! autoplete#TriggerInsshow() abort
@@ -405,6 +418,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             endif
             let g:autoplete_instimer = timer_start(g:autoplete_insdelay, {-> autoplete#TriggerInsrun()})
         endif
+        return ""
     endfunction
 
     " --------------------------------------------------
@@ -423,7 +437,6 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         let g:autoplete_instimer = 0
 
         let &iskeyword = l:save_iskeyword
-        unlet l:save_iskeyword
     endfunction
 
     " --------------------------------------------------
@@ -436,7 +449,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " --------------------------------------------------
     augroup autoplete_cmd_bas
         autocmd!
-        if g:autoplete_trigtype ==# 'ins'
+        if g:autoplete_insstate ==# 1
             autocmd TextChangedI * call autoplete#TriggerInsshow()
         endif
     augroup END
@@ -444,9 +457,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     " --------------------------------------------------
     " keymap
     " --------------------------------------------------
-    inoremap <silent> <expr> <Tab> "\<C-r>=autoplete#TriggerTabnext()\<CR>"
-    inoremap <silent> <expr> <S-Tab> "\<C-r>=autoplete#TriggerTabprev()\<CR>"
-    inoremap <silent> <expr> <BS> "\<C-r>=autoplete#DeleteSelchar()\<CR>"
+    inoremap <silent> <expr> <Tab> autoplete#TriggerTabnext()
+    inoremap <silent> <expr> <S-Tab> autoplete#TriggerTabprev()
+    inoremap <silent> <expr> <BS> autoplete#DeleteSelchar()
 
 endif
 
