@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-21 12:05:23 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-21 12:26:47 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -336,24 +336,6 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     endfunction
 
     " --------------------------------------------------
-    " autoplete#DeleteSelchar
-    " --------------------------------------------------
-    function! autoplete#DeleteSelchar() abort
-        if pumvisible()
-            let l:selected = complete_info().selected
-            if l:selected >= 0
-                let l:items = complete_info().items
-                if len(l:items) > l:selected
-                    return "\<C-e>"
-                endif
-            endif
-            return "\<C-e>\<BS>"
-        else
-            return "\<BS>"
-        endif
-    endfunction
-
-    " --------------------------------------------------
     " autoplete#TriggerTabnext
     " --------------------------------------------------
     function! autoplete#TriggerTabnext() abort
@@ -394,6 +376,23 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             return "\<C-p>"
         endif
         return "\<S-Tab>"
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#DeleteSelchar
+    " --------------------------------------------------
+    function! autoplete#DeleteSelchar() abort
+        if pumvisible() || complete_check()
+            let l:selected = complete_info().selected
+            if l:selected >= 0
+                let l:items = complete_info().items
+                if len(l:items) > l:selected
+                    return "\<C-e>"
+                endif
+            endif
+            return "\<C-e>\<BS>"
+        endif
+        return "\<BS>"
     endfunction
 
     " --------------------------------------------------
