@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-22 00:39:00 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-22 13:48:04 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -28,9 +28,9 @@ set cpoptions&vim
 " public setting
 let g:autoplete_enabled     = get(g:, 'autoplete_enabled',      0)
 
-let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
 let g:autoplete_usedefdict  = get(g:, 'autoplete_usedefdict',   1)
 let g:autoplete_usecusdict  = get(g:, 'autoplete_usecusdict',   1)
+let g:autoplete_useomni     = get(g:, 'autoplete_useomni',      1)
 let g:autoplete_usekeyword  = get(g:, 'autoplete_usekeyword',   1)
 let g:autoplete_usebuffer   = get(g:, 'autoplete_usebuffer',    1)
 let g:autoplete_usefile     = get(g:, 'autoplete_usefile',      1)
@@ -40,6 +40,9 @@ let g:autoplete_insdelay    = get(g:, 'autoplete_insdelay',     500)
 let g:autoplete_insminchar  = get(g:, 'autoplete_insminchar',   2)
 let g:autoplete_insftype    = get(g:, 'autoplete_insftype',     ['*'])
 
+let g:autoplete_maxabbr     = get(g:, 'autoplete_maxabbr',      30)
+let g:autoplete_maxmenu     = get(g:, 'autoplete_maxmenu',      80)
+let g:autoplete_maxaddi     = get(g:, 'autoplete_maxaddi',      20)
 let g:autoplete_cusdict     = get(g:, 'autoplete_cusdict',      '')
 
 " plugin variable
@@ -67,24 +70,24 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         else
             let l:comp_list = []
             let l:file_type = &filetype
-            let l:base_len = len(a:base)
+            let l:base_len = strdisplaywidth(a:base)
 
-            " 1. omni
-            if g:autoplete_useomni
-                let l:omni_comp = autoplete#CompleteOmni(a:base)
-                call extend(l:comp_list, l:omni_comp)
-            endif
-
-            " 2. defdict
+            " 1. defdict
             if g:autoplete_usedefdict
                 let l:defdict_comp = autoplete#CompleteDefdict(a:base)
                 call extend(l:comp_list, l:defdict_comp)
             endif
 
-            " 3. cusdict
+            " 2. cusdict
             if g:autoplete_usecusdict
                 let l:cusdict_comp = autoplete#CompleteCusdict(a:base)
                 call extend(l:comp_list, l:cusdict_comp)
+            endif
+
+            " 3. omni
+            if g:autoplete_useomni
+                let l:omni_comp = autoplete#CompleteOmni(a:base)
+                call extend(l:comp_list, l:omni_comp)
             endif
 
             " 4. keyword
@@ -108,60 +111,51 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             " echo getline('.')[0:col('.')-2]
             " call getchar()
 
-            " for il in l:comp_list
-            "     echo printf(">>> word='%s' | abbr='%s' | menu='%s'", get(il, 'word', ''), get(il, 'abbr', ''), get(il, 'menu', ''))
+            " for ic in l:comp_list
+            "     echo printf(">>> word='%s' | abbr='%s' | menu='%s'", get(ic, 'word', ''), get(ic, 'abbr', ''), get(ic, 'menu', ''))
             " endfor
             " call getchar()
 
             " remove duplicates
             let l:comp_check = {}
             let l:comp_unique = []
-            for il in l:comp_list
-                if type(il) ==# type({}) && has_key(il, 'word')
-                    if !has_key(l:comp_check, il.word)
-                        let l:comp_check[il.word] = 1
-                        call add(l:comp_unique, il)
+            for ic in l:comp_list
+                if type(ic) ==# type({}) && has_key(ic, 'indx')
+                    if !has_key(l:comp_check, ic.indx)
+                        let l:comp_check[ic.indx] = 1
+                        call add(l:comp_unique, ic)
                     endif
                 endif
             endfor
-
             return l:comp_unique
         endif
     endfunction
 
     " --------------------------------------------------
-    " autoplete#CompleteOmni
+    " autoplete#FormatItem
     " --------------------------------------------------
-    function! autoplete#CompleteOmni(base) abort
-        let l:comp_list = []
-        let l:file_type = &filetype
-        let l:base_len = len(a:base)
+    function! autoplete#FormatItem(word, menu, addi, info, len) abort
+        let l:bld_indx = a:word
+        let l:bld_word = a:word
+        let l:bld_abbr = a:word
+        let l:bld_menu = a:menu
+        let l:bld_addi = a:addi
 
-        if &omnifunc != ''
-            let l:orig_view = winsaveview()
-            let l:orig_pos = getpos('.')
-            try
-                let l:omni_comp = call(&omnifunc, [0, a:base])
-                call winrestview(l:orig_view)
-                call setpos('.', l:orig_pos)
-                if type(l:omni_comp) ==# type([])
-                    for il in l:omni_comp
-                        if type(il) ==# type({}) && has_key(il, 'word')
-                            let l:word = il.word
-                            if a:base ==# '' || l:word =~# '^'.a:base
-                                let l:menu = has_key(il, 'menu') ? il.menu : ''
-                                call add(l:comp_list, {'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[O] '.l:menu})
-                            endif
-                        endif
-                    endfor
-                endif
-            catch
-                call winrestview(l:orig_view)
-                call setpos('.', l:orig_pos)
-            endtry
+        if g:autoplete_maxabbr > 0 && strdisplaywidth(l:bld_abbr) > g:autoplete_maxabbr
+            let l:bld_abbr = l:bld_abbr[0:g:autoplete_maxabbr-3] . '...'
         endif
 
-        return l:comp_list
+        if g:autoplete_maxmenu > 0 && strdisplaywidth(l:bld_menu) > g:autoplete_maxmenu
+            let l:bld_menu = l:bld_menu[0:g:autoplete_maxmenu-3] . '...'
+        elseif g:autoplete_maxmenu > 0 && strdisplaywidth(l:bld_menu) < g:autoplete_maxmenu
+            let l:bld_menu = l:bld_menu . repeat(' ', g:autoplete_maxmenu - strdisplaywidth(l:bld_menu) + 1)
+        endif
+
+        if g:autoplete_maxaddi > 0 && strdisplaywidth(l:bld_addi) > g:autoplete_maxaddi
+            let l:bld_addi = l:bld_addi[0:g:autoplete_maxaddi-3] . '...'
+        endif
+
+        return {'indx':l:bld_indx, 'word':l:bld_word[a:len:], 'abbr':l:bld_abbr, 'menu':l:bld_menu . ' ' . l:bld_addi}
     endfunction
 
     " --------------------------------------------------
@@ -170,7 +164,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     function! autoplete#CompleteDefdict(base) abort
         let l:comp_list = []
         let l:file_type = &filetype
-        let l:base_len = len(a:base)
+        let l:base_len = strdisplaywidth(a:base)
 
         " check filetype
         if empty(l:file_type)
@@ -180,9 +174,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         " dict path list
         let l:dict_list = []
         if !empty(g:autoplete_defdict) && isdirectory(g:autoplete_defdict)
-            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type.'.dict'), '\n')
+            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type . '.dict'), '\n')
             call extend(l:dict_list, l:defdict)
-            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type.'_*.dict'), '\n')
+            let l:defdict = split(globpath(g:autoplete_defdict, l:file_type . '_*.dict'), '\n')
             call extend(l:dict_list, l:defdict)
         endif
 
@@ -191,8 +185,14 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             if filereadable(df)
                 let l:word_list = readfile(df)
                 for iw in l:word_list
-                    if iw =~# '^'.a:base
-                        call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] default - '.fnamemodify(df, ':t')})
+                    if iw =~# '^' . a:base
+                        let l:match = matchlist(iw, '\v([^(]*\()([^)]*)\)')
+
+                        let l:word = !empty(l:match) ? l:match[1] : iw
+                        let l:menu = !empty(l:match) ? '[D] ' . l:match[2] : '[D] ' . iw
+                        let l:addi = '[DEF] ' . fnamemodify(df, ':t')
+                        let l:info = iw
+                        call add(l:comp_list, autoplete#FormatItem(l:word, l:menu, l:addi, l:info, l:base_len))
                     endif
                 endfor
             endif
@@ -207,7 +207,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     function! autoplete#CompleteCusdict(base) abort
         let l:comp_list = []
         let l:file_type = &filetype
-        let l:base_len = len(a:base)
+        let l:base_len = strdisplaywidth(a:base)
 
         " check filetype
         if empty(l:file_type)
@@ -217,9 +217,9 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         " dict path list
         let l:dict_list = []
         if !empty(g:autoplete_cusdict) && isdirectory(g:autoplete_cusdict)
-            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type.'.dict'), '\n')
+            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type . '.dict'), '\n')
             call extend(l:dict_list, l:cusdict)
-            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type.'_*.dict'), '\n')
+            let l:cusdict = split(globpath(g:autoplete_cusdict, l:file_type . '_*.dict'), '\n')
             call extend(l:dict_list, l:cusdict)
         endif
 
@@ -228,12 +228,56 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
             if filereadable(df)
                 let l:word_list = readfile(df)
                 for iw in l:word_list
-                    if iw =~# '^'.a:base
-                        call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[D] custom - '.fnamemodify(df, ':t')})
+                    if iw =~# '^' . a:base
+                        let l:match = matchlist(iw, '\v([^(]*\()([^)]*)\)')
+
+                        let l:word = !empty(l:match) ? l:match[1] : iw
+                        let l:menu = !empty(l:match) ? '[D] ' . l:match[2] : '[D] ' . iw
+                        let l:addi = '[CUS] ' . fnamemodify(df, ':t')
+                        let l:info = iw
+                        call add(l:comp_list, autoplete#FormatItem(l:word, l:menu, l:addi, l:info, l:base_len))
                     endif
                 endfor
             endif
         endfor
+
+        return l:comp_list
+    endfunction
+
+    " --------------------------------------------------
+    " autoplete#CompleteOmni
+    " --------------------------------------------------
+    function! autoplete#CompleteOmni(base) abort
+        let l:comp_list = []
+        let l:file_type = &filetype
+        let l:base_len = strdisplaywidth(a:base)
+
+        if &omnifunc != ''
+            let l:orig_view = winsaveview()
+            let l:orig_pos = getpos('.')
+            try
+                let l:omni_comp = call(&omnifunc, [0, a:base])
+                call winrestview(l:orig_view)
+                call setpos('.', l:orig_pos)
+                if type(l:omni_comp) ==# type([])
+                    for iw in l:omni_comp
+                        if type(iw) ==# type({}) && has_key(iw, 'word')
+                            let l:word = iw.word
+                            if a:base ==# '' || l:word =~# '^' . a:base
+                                let l:word = l:word
+                                let l:menu = has_key(iw, 'menu') ? '[O] ' . iw.menu : '[O]'
+                                let l:addi = '[OMN] ' . &filetype
+                                let l:info = has_key(iw, 'info') ? iw.info : l:word . l:menu
+                                call add(l:comp_list, autoplete#FormatItem(l:word, l:menu, l:addi, l:info, l:base_len))
+                            endif
+                        endif
+                    endfor
+                endif
+            catch
+                call winrestview(l:orig_view)
+                call setpos('.', l:orig_pos)
+            endtry
+        endif
 
         return l:comp_list
     endfunction
@@ -245,13 +289,11 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         let l:save_iskeyword = &iskeyword
         set iskeyword+=.,:,-
 
+        " get env
         let l:comp_list = []
         let l:file_type = &filetype
-        let l:base_len = len(a:base)
-
-        " get filename
-        let l:current_file = expand('%:t')
-        let l:menu_suffix = empty(l:current_file) ? 'keyword' : l:current_file
+        let l:curr_file = !empty(expand('%:t')) ? expand('%:t') : 'keyword'
+        let l:base_len = strdisplaywidth(a:base)
 
         " get input word
         let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
@@ -266,11 +308,11 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
         " search all buffer
         keepjumps call setpos('.', [0, 1, 1, 0])
         while 1
-            let [lnum, cnum] = searchpos('\<'.l:search_term.'\k\+', 'W')
+            let [lnum, cnum] = searchpos('\<' . l:search_term . '\k\+', 'W')
             if lnum ==# 0 | break | endif
 
             let l:line = getline(lnum)
-            let l:word = matchstr(l:line, '\<'.l:search_term.'\k\+', cnum - 1)
+            let l:word = matchstr(l:line, '\<' . l:search_term . '\k\+', cnum - 1)
             if !empty(l:word) && l:word !=# l:search_term
                 let l:word_list[l:word] = 1
             endif
@@ -284,7 +326,11 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
 
         " convert to list
         for iw in keys(l:word_list)
-            call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[K] '.l:menu_suffix})
+            let l:word = iw
+            let l:menu = '[K] ' . iw
+            let l:addi = '[KWD] ' . l:curr_file
+            let l:info = iw
+            call add(l:comp_list, autoplete#FormatItem(l:word, l:menu, l:addi, l:info, l:base_len))
         endfor
 
         let &iskeyword = l:save_iskeyword
@@ -297,14 +343,17 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     function! autoplete#CompleteBuffer(base) abort
         let l:comp_list = []
         let l:file_type = &filetype
-        let l:base_len = len(a:base)
+        let l:base_len = strdisplaywidth(a:base)
 
         " get list
         try
             let l:word_list = complete_check() ? [] : getcompletion(a:base, 'buffer')
             for iw in l:word_list
                 let l:word = fnamemodify(iw, ':t')
-                call add(l:comp_list, {'word': l:word[l:base_len:], 'abbr': l:word, 'menu': '[B] buffer'})
+                let l:menu = '[B] ' . fnamemodify(iw, ':t')
+                let l:addi = '[BUF] ' . 'buffer'
+                let l:info = iw
+                call add(l:comp_list, autoplete#FormatItem(l:word, l:menu, l:addi, l:info, l:base_len))
             endfor
         catch
             " ignore error
@@ -319,13 +368,17 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
     function! autoplete#CompleteFile(base) abort
         let l:comp_list = []
         let l:file_type = &filetype
-        let l:base_len = len(a:base)
+        let l:base_len = strdisplaywidth(a:base)
 
         " get list
         try
             let l:word_list = complete_check() ? [] : getcompletion(a:base, 'file')
             for iw in l:word_list
-                call add(l:comp_list, {'word': iw[l:base_len:], 'abbr': iw, 'menu': '[F] file & dir'})
+                let l:word = iw
+                let l:menu = '[B] ' . iw
+                let l:addi = '[FLE] ' . 'file & dir'
+                let l:info = iw
+                call add(l:comp_list, autoplete#FormatItem(l:word, l:menu, l:addi, l:info, l:base_len))
             endfor
         catch
             " ignore error
@@ -430,7 +483,7 @@ if exists('g:autoplete_enabled') && g:autoplete_enabled ==# 1
 
         if mode() ==# 'i' && !pumvisible() && !complete_check()
             let l:word = matchstr(getline('.')[0:col('.')-2], '\k\+$')
-            if !empty(l:word) && len(l:word) >= g:autoplete_insminchar
+            if !empty(l:word) && strdisplaywidth(l:word) >= g:autoplete_insminchar
                 call complete(col('.'), autoplete#OperateComplete(0, l:word))
             endif
         endif

@@ -2,8 +2,8 @@
 
 ## A lightweight automatic completion plugin for vim...
 vim-autoplete is a lightweight auto-completion plugin for Vim that provides multiple completion sources including:
-- Omni completion
 - Dict completion
+- Omni completion
 - Keyword completion
 - Buffer completion
 - File completion
@@ -38,12 +38,12 @@ Add these to your `.vimrc`:
 ```vim
 " Set 1 enable autoplete (default: 0)
 let g:autoplete_enabled = 1
-" enable/disable omni (default: 1)
-let g:autoplete_useomni = 1
 " enable/disable defdict (default: 1)
 let g:autoplete_usedefdict = 1
 " enable/disable cusdict (default: 1)
 let g:autoplete_usecusdict = 1
+" enable/disable omni (default: 1)
+let g:autoplete_useomni = 1
 " enable/disable keyword (default: 1)
 let g:autoplete_usekeyword = 1
 " enable/disable buffer (default: 1)
