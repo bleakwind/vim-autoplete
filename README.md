@@ -58,6 +58,12 @@ let g:autoplete_insdelay = 500
 let g:autoplete_insminchar = 2
 " File types to enable auto-completion for (* for all)
 let g:autoplete_insftype = ['*']
+" Maximum width for abbreviation column in completion menu (default: 30)
+let g:autoplete_maxabbr = 30
+" Maximum width for menu column in completion menu (default: 80)
+let g:autoplete_maxmenu = 80
+" Maximum width for additional column in completion menu (default: 30)
+let g:autoplete_maxaddi = 30
 " Custom dictionary path support (example: php_string.dict, c_basic.dict)
 let g:autoplete_cusdict = '/pub/_program/vim/_tool/autoplete/dict'
 ```

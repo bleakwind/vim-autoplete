@@ -1,7 +1,7 @@
 "  vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 "
 "  +-------------------------------------------------------------------------+
-"  | $Id: autoplete.vim 2026-03-22 13:48:04 Bleakwind Exp $                  |
+"  | $Id: autoplete.vim 2026-03-22 13:57:47 Bleakwind Exp $                  |
 "  +-------------------------------------------------------------------------+
 "  | Copyright (c) 2008-2026 Bleakwind(Rick Wu).                             |
 "  +-------------------------------------------------------------------------+
@@ -42,7 +42,7 @@ let g:autoplete_insftype    = get(g:, 'autoplete_insftype',     ['*'])
 
 let g:autoplete_maxabbr     = get(g:, 'autoplete_maxabbr',      30)
 let g:autoplete_maxmenu     = get(g:, 'autoplete_maxmenu',      80)
-let g:autoplete_maxaddi     = get(g:, 'autoplete_maxaddi',      20)
+let g:autoplete_maxaddi     = get(g:, 'autoplete_maxaddi',      30)
 let g:autoplete_cusdict     = get(g:, 'autoplete_cusdict',      '')
 
 " plugin variable
