@@ -73,7 +73,7 @@ let g:autoplete_cusdict = '/pub/_program/vim/_tool/autoplete/dict'
 ### Manual Completion
 - In insert mode, type part of a word then press `<Tab>` to trigger completion
 - Navigate completion menu with `<Tab>` (next) and `<S-Tab>` (previous)
-- Press `<Enter>` to select current completion
+- Pressing `<Tab>` / `<S-Tab>` will navigate and insert the selected item directly
 
 ### Automatic Completion
 - When g:autoplete_insstate = 1, completions will appear automatically while typing
